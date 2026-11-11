@@ -50,10 +50,14 @@ aside{background:var(--side);border-right:1px solid var(--line);padding:16px 12p
 .side-pie{margin-top:auto;font-size:12.5px;color:var(--muted);padding:0 6px}
 .bloque{font-size:18px;margin:22px 0 10px}
 .lab{display:block;font-weight:600;font-size:14.5px;margin:0 0 4px}
-.fila-curso{display:flex;gap:6px;align-items:center;margin-bottom:6px}
-.fila-curso select{flex:1}
-.quitar{border:1px solid var(--line);background:var(--panel);border-radius:8px;width:38px;height:38px;cursor:pointer;font-size:18px;color:var(--muted);flex:none}
-.quitar:hover{color:var(--ink)}
+.add{display:flex;gap:8px}
+.add select{flex:1;min-width:0}
+.add .btn{white-space:nowrap}
+.niveles{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.niveles li{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--mint-soft);border-radius:8px;padding:6px 6px 6px 12px;font-weight:600;font-size:15px}
+.niveles li.solo{padding:9px 12px}
+.quitar{border:0;background:transparent;border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:18px;color:var(--muted);flex:none}
+.quitar:hover{background:var(--panel);color:var(--ink)}
 .check-g h3{font-size:15px;margin:14px 0 6px;color:var(--muted)}
 .check-g h3:first-child{margin-top:0}
 .check-g label{font-weight:400;font-size:15px;margin:6px 0}
@@ -197,12 +201,9 @@ a{color:var(--btn)}
   <h1 data-t="f0_t"></h1>
   <p class="lead" data-t="f0_p"></p>
   <div class="card">
-    <div class="dos">
-      <div><label for="s_etapa" data-t="etapa"></label><select id="s_etapa"></select></div>
-      <div><label for="s_curso" data-t="curso"></label>
-        <div id="s_cursos"></div>
-        <button class="enlace" id="btnAddCurso" data-t="anadir" style="margin-top:6px"></button></div>
-    </div>
+    <label for="s_nivel" data-t="curso"></label>
+    <div class="add"><select id="s_nivel"></select><button class="btn sec" id="btnAddCurso" data-t="anadir"></button></div>
+    <ul class="niveles" id="s_cursos" aria-live="polite"></ul>
     <label for="s_area" id="l_area"></label>
     <input type="text" id="s_area">
     <label for="s_titulo"><span data-t="titulo"></span> <span class="opt" data-t="titulo_opt"></span></label>
@@ -329,7 +330,7 @@ const DTD = "<!--\n    ODE Content DTD\n    Document Type Definition for eXeLear
 
 /* ================= Estado ================= */
 const ETAPAS_OK = ["primaria", "eso", "bach", "fp"];
-const S = { checks: {}, lang: "es", etapa: "primaria", curso: "1", cursos: ["1"], titulo: "", area: "", fase: 0, ok: false,
+const S = { checks: {}, lang: "es", etapa: "primaria", curso: "1", cursos: ["1"], niveles: null, titulo: "", area: "", fase: 0, ok: false,
   nombre: "", centro: "", localidad: "", provincia: "", pais: "" };
 try { Object.assign(S, JSON.parse(localStorage.getItem("reanima") || "{}")); if (!ETAPAS_OK.includes(S.etapa)) S.etapa = "primaria"; } catch (e) {}
 const guardarEstado = () => { try { localStorage.setItem("reanima", JSON.stringify(S)); } catch (e) {} };
@@ -372,8 +373,8 @@ const T = {
   obligatorio: { es: "Escribe tu nombre para continuar.", en: "Enter your name to continue." },
   nav: { es: ["Tu REA", "Analiza", "Crea", "Convierte", "Mejora", "Valida", "Ajustes", "Acerca de"], en: ["Your OER", "Analyse", "Create", "Convert", "Improve", "Validate", "Settings", "About"] },
   f0_t: { es: "Tu REA", en: "Your OER" },
-  f0_p: { es: "Elige la etapa, el curso o cursos y el título. Los prompts se adaptan solos y los recogen automáticamente.", en: "Choose the stage, the year or years and the title. The prompts adapt automatically and include them for you." },
-  etapa: { es: "Etapa", en: "Stage" }, curso: { es: "Curso", en: "Year" }, anadir: { es: "+ Añadir curso", en: "+ Add year" }, quitar: { es: "Quitar", en: "Remove" },
+  f0_p: { es: "Elige el curso o los cursos y escribe el título. Los prompts se adaptan solos y los recogen automáticamente.", en: "Choose the year or years and write the title. The prompts adapt automatically and include them for you." },
+  etapa: { es: "Etapa", en: "Stage" }, curso: { es: "Curso o cursos", en: "Year or years" }, anadir: { es: "Añadir", en: "Add" }, quitar: { es: "Quitar", en: "Remove" },
   titulo: { es: "Título del REA", en: "OER title" }, titulo_opt: { es: "(si aún no lo tienes, la IA te propondrá uno)", en: "(if you do not have one yet, the AI will suggest one)" },
   f0_est: { es: "Tu REA tendrá estas secciones", en: "Your OER will have these sections" },
   f0_ref: { es: "Estructura inspirada en la de proyectos REA de referencia como EDIA (INTEF/Cedec) y CREA (Junta de Extremadura), parte de la OER Dynamic Coalition de la UNESCO. Los REA que crea REAnima se alinean con la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.", en: "Structure inspired by leading OER projects such as EDIA (INTEF/Cedec) and CREA (Junta de Extremadura), part of the UNESCO OER Dynamic Coalition. The OERs created with REAnima are aligned with the Spanish standard UNE 71362 on the quality of digital educational materials." },
@@ -432,24 +433,43 @@ const ETAPAS = {
 };
 const esFP = e => e === "fp";
 // Varios cursos: la estructura y el lenguaje se basan en el curso más bajo; la edad abarca todos.
+const NIVELES = Object.entries(ETAPAS).flatMap(([e, E]) => E.cursos.map(c => ({ id: `${e}-${c}`, etapa: e, curso: c })));
+const CORTO = { primaria: { es: "Primaria", en: "Primary" }, eso: { es: "ESO", en: "ESO" }, bach: { es: "Bachillerato", en: "Bachillerato" }, fp: { es: "FP", en: "VET" } };
 function normCursos() {
-  const E = ETAPAS[S.etapa];
-  if (!Array.isArray(S.cursos)) S.cursos = [S.curso || E.cursos[0]];
-  S.cursos = E.cursos.filter(c => S.cursos.includes(c));
-  if (!S.cursos.length) S.cursos = [E.cursos[0]];
+  // Migración desde versiones anteriores (etapa + cursos)
+  if (!Array.isArray(S.niveles)) S.niveles = (Array.isArray(S.cursos) ? S.cursos : [S.curso || "1"]).map(c => `${S.etapa}-${c}`);
+  const ids = NIVELES.map(n => n.id);
+  S.niveles = ids.filter(id => S.niveles.includes(id));          // orden de menor a mayor edad, sin repetidos
+  if (!S.niveles.length) S.niveles = [ids[0]];
+  // La estructura, el lenguaje y la etapa se toman del curso más bajo
+  const base = NIVELES.find(n => n.id === S.niveles[0]);
+  S.etapa = base.etapa;
+  S.cursos = S.niveles.map(id => NIVELES.find(n => n.id === id)).filter(n => n.etapa === S.etapa).map(n => n.curso);
   S.curso = S.cursos[0];
 }
+function nivelTxt(id, en) { const n = NIVELES.find(x => x.id === id); return en ? `${CORTO[n.etapa].en} year ${n.curso}` : `${n.curso}.º de ${CORTO[n.etapa].es}`; }
+function nivelesTxt(lista, en) {
+  // Agrupa por etapa: «1.º y 2.º de Primaria», «6.º de Primaria y 1.º de ESO», «Primary years 1 and 2»
+  const grupos = [];
+  lista.map(id => NIVELES.find(n => n.id === id)).forEach(n => { const g = grupos.find(x => x.etapa === n.etapa); g ? g.cursos.push(n.curso) : grupos.push({ etapa: n.etapa, cursos: [n.curso] }); });
+  const partes = grupos.map(g => en ? `${CORTO[g.etapa].en} ${g.cursos.length > 1 ? "years" : "year"} ${listaTxt(g.cursos, true)}` : `${listaTxt(g.cursos.map(c => c + ".º"), false)} de ${CORTO[g.etapa].es}`);
+  return listaTxt(partes, en);
+}
+function etapasTxt() { const es = [...new Set(S.niveles.map(id => NIVELES.find(n => n.id === id).etapa))]; return listaTxt(es.map(e => L(ETAPAS[e].n)), EN()); }
 function listaTxt(xs, en) { return xs.length === 1 ? xs[0] : xs.slice(0, -1).join(", ") + (en ? " and " : " y ") + xs[xs.length - 1]; }
 function cursosTxt(lista, en, conPalabra) {
   const xs = lista.map(c => en ? c : c + ".º");
   if (en) return (lista.length > 1 ? "years " : "year ") + listaTxt(xs, true);
   return listaTxt(xs, false) + (conPalabra ? (lista.length > 1 ? " cursos" : " curso") : "");
 }
-const CT = () => cursosTxt(S.cursos, EN(), true);
+const CT = () => nivelesTxt(S.niveles, EN());
 function edadTxt() {
-  const a = +S.cursos[0], b = +S.cursos[S.cursos.length - 1];
-  const off = { primaria: 5, eso: 11, bach: 15 }[S.etapa];
-  return off === undefined ? "16+" : `${a + off}-${b + off + 1}`;
+  const OFF = { primaria: 5, eso: 11, bach: 15 };
+  const ns = S.niveles.map(id => NIVELES.find(n => n.id === id));
+  const ini = ns[0], fin = ns[ns.length - 1];
+  const a = ini.etapa === "fp" ? 16 : +ini.curso + OFF[ini.etapa];
+  if (fin.etapa === "fp") return `${a}+`;
+  return `${a}-${+fin.curso + OFF[fin.etapa] + 1}`;
 }
 function perfil(etapa, curso) {
   const c = +curso;
@@ -543,15 +563,15 @@ function ctx() {
   const E = ETAPAS[S.etapa], p = perfil(S.etapa, S.curso);
   const lugar = [S.centro, S.localidad, S.provincia, S.pais].filter(Boolean).join(", ");
   return EN() ? `OER CONTEXT
-- Stage and year: ${L(E.n)}, ${CT()} (Spanish education system), students aged ${edadTxt()}
+- Year(s): ${CT()} (Spanish education system), students aged ${edadTxt()}
 - ${L(E.area)}: ${v(S.area, "as stated in the document")}
-- Author: ${v(S.nombre, "the teacher")}${lugar ? " (" + lugar + ")" : ""}${S.titulo ? "\n- OER title: " + S.titulo : ""}${S.cursos.length > 1 ? "\n- Several years: make it accessible to the lowest year and add extension work for the highest." : ""}
+- Author: ${v(S.nombre, "the teacher")}${lugar ? " (" + lugar + ")" : ""}${S.titulo ? "\n- OER title: " + S.titulo : ""}${S.niveles.length > 1 ? "\n- Several years: make it accessible to the youngest students and add extension work for the highest." : ""}
 - Use: the OER will be used on the interactive whiteboard with the whole class and also independently by each student.
 - Language of the OER: English.`
   : `CONTEXTO DEL REA
-- Etapa y curso: ${L(E.n)}, ${CT()}, alumnado de ${edadTxt()} años
+- Curso o cursos: ${CT()}, alumnado de ${edadTxt()} años
 - ${L(E.area)}: ${v(S.area, "la indicada en el documento")}
-- Autoría: ${v(S.nombre, "el docente")}${lugar ? " (" + lugar + ")" : ""}${S.titulo ? "\n- Título del REA: " + S.titulo : ""}${S.cursos.length > 1 ? "\n- Varios cursos: hazlo accesible para el curso más bajo y añade propuestas de ampliación para el más alto." : ""}
+- Autoría: ${v(S.nombre, "el docente")}${lugar ? " (" + lugar + ")" : ""}${S.titulo ? "\n- Título del REA: " + S.titulo : ""}${S.niveles.length > 1 ? "\n- Varios cursos: hazlo accesible para el alumnado del curso más bajo y añade propuestas de ampliación para el más alto." : ""}
 - Uso: el REA se usará en la pizarra digital con todo el grupo y también de forma autónoma por cada alumno o alumna.`;
 }
 function reglas() {
@@ -566,7 +586,7 @@ function reglas() {
 }
 function prompt1() {
   const doc = S.etapa === "primaria" ? L({ es: "situación de aprendizaje", en: "learning situation" }) : L({ es: "programación, unidad o documento base", en: "lesson plan, unit or source document" });
-  return EN() ? `You are a pedagogical expert in ${L(ETAPAS[S.etapa].n)} in Spain and in designing Open Educational Resources (OER) with eXeLearning.
+  return EN() ? `You are a pedagogical expert in ${etapasTxt()} in Spain and in designing Open Educational Resources (OER) with eXeLearning.
 
 I am attaching (or pasting below) a ${doc} written by a teacher. Your task is to ANALYSE it, without writing the OER content yet.
 
@@ -597,7 +617,7 @@ At most 3 questions whose answers would change the OER.
 Rules:
 ${reglas()}
 - Write clearly and briefly. Do not generate code or OER content yet.`
-  : `Eres un experto pedagógico en ${L(ETAPAS[S.etapa].n)} en España y en el diseño de Recursos Educativos Abiertos (REA) con eXeLearning.
+  : `Eres un experto pedagógico en ${etapasTxt()} en España y en el diseño de Recursos Educativos Abiertos (REA) con eXeLearning.
 
 Te adjunto (o pego a continuación) una ${doc} de un docente. Tu tarea es ANALIZARLA, sin escribir todavía el contenido del REA.
 
@@ -638,7 +658,7 @@ function prompt2() {
     return x;
   }).join("\n");
   const autor = v(S.nombre, EN() ? "Teacher's name" : "Nombre del docente");
-  const xml = `<rea titulo="${v(S.titulo, "...")}" etapa="${S.etapa}" curso="${S.cursos.join(",")}" area="${v(S.area, "...")}" autor="${autor}" idioma="${S.lang}" licencia="CC BY-SA 4.0">
+  const xml = `<rea titulo="${v(S.titulo, "...")}" etapa="${S.etapa}" curso="${S.cursos.join(",")}" niveles="${S.niveles.join(",")}" area="${v(S.area, "...")}" autor="${autor}" idioma="${S.lang}" licencia="CC BY-SA 4.0">
   <descripcion>...</descripcion>
   <palabras_clave>...</palabras_clave>
   <seccion tipo="bienvenida" titulo="...">
@@ -674,7 +694,7 @@ It is not the final text, but it must be rich enough for the teacher (and the AI
   <p><strong>Criteria and sessions:</strong> assessment criteria (with codes) and the sessions it covers.</p>
 Do not copy the source document literally.
 
-MANDATORY STRUCTURE (${L(ETAPAS[S.etapa].n)}, ${CT()})
+MANDATORY STRUCTURE (${CT()})
 ${lista}
 ${rr ? "\n" + L(rr) + "\nThe challenge may be a little more complete than the rest (situation, deliverable, steps and guiding questions), but still concise.\n" : ""}
 LANGUAGE FOR STUDENTS
@@ -719,7 +739,7 @@ No es el texto definitivo, pero debe ser lo bastante rico para que el docente (y
   <p><strong>Criterios y sesiones:</strong> criterios de evaluación (con sus códigos) y sesiones que cubre.</p>
 No copies literalmente el documento base.
 
-ESTRUCTURA OBLIGATORIA (${L(ETAPAS[S.etapa].n)}, ${CT()})
+ESTRUCTURA OBLIGATORIA (${CT()})
 ${lista}
 ${rr ? "\n" + L(rr) + "\nEl reto puede estar algo más completo que el resto (situación, entregable, pasos y preguntas guía), pero sin extenderse.\n" : ""}
 LENGUAJE PARA EL ALUMNADO
@@ -753,7 +773,7 @@ function prompt4() {
   const p = perfil(S.etapa, S.curso), fp = esFP(S.etapa), conReto = S.etapa !== "primaria";
   const mundoES = fp ? "el mundo profesional (situaciones reales de empresa, del oficio o de antiguos alumnos)" : "la vida real y el entorno del alumnado";
   const mundoEN = fp ? "the professional world (real company or trade situations, former students' experiences)" : "real life and the students' surroundings";
-  return EN() ? `You are an expert teacher in ${L(ETAPAS[S.etapa].n)} who writes clear, friendly, inclusive and high-quality learning materials, following the Spanish standard UNE 71362 on the quality of digital educational materials.
+  return EN() ? `You are an expert teacher in ${etapasTxt()} who writes clear, friendly, inclusive and high-quality learning materials, following the Spanish standard UNE 71362 on the quality of digital educational materials.
 
 ${ctx()}
 
@@ -805,7 +825,7 @@ Text inside the image: none | for infographics only: a short title and 3-5 key i
 3) In 2-3 lines, what you added, which quality guidelines you strengthened and what I should check.
 
 ${reglas()}`
-  : `Eres un docente experto en ${L(ETAPAS[S.etapa].n)} que escribe materiales educativos claros, cercanos, inclusivos y de calidad, siguiendo la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.
+  : `Eres un docente experto en ${etapasTxt()} que escribe materiales educativos claros, cercanos, inclusivos y de calidad, siguiendo la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.
 
 ${ctx()}
 
@@ -864,16 +884,16 @@ function estilo() {
 Along with this message I am attaching reference material for the visual style: the project logo, a colour palette or images already created for this OER. Follow that style faithfully: colours, line style, the way characters are drawn and the overall feel.
 If no image is attached, DO NOT generate anything: ask me for the reference material first.
 
-Audience: ${L(ETAPAS[S.etapa].n)} students, ${CT()} (aged ${edadTxt()}). Diverse people (ages, cultures, abilities, family models), no stereotypes. No brand logos or well-known characters.`
+Audience: ${CT()} students (aged ${edadTxt()}). Diverse people (ages, cultures, abilities, family models), no stereotypes. No brand logos or well-known characters.`
   : `MATERIAL DE ESTILO (OBLIGATORIO)
 Junto a este mensaje adjunto material de referencia del estilo visual: logo del proyecto, paleta de colores o imágenes ya creadas para este REA. Sigue fielmente ese estilo: colores, tipo de trazo, forma de dibujar a los personajes y ambiente.
 Si no hay ninguna imagen adjunta, NO generes nada: pídeme primero el material de referencia.
 
-Público: alumnado de ${L(ETAPAS[S.etapa].n)}, ${CT()} (${edadTxt()} años). Personas diversas (edades, culturas, capacidades, modelos familiares), sin estereotipos. Sin logotipos de marcas ni personajes conocidos.`;
+Público: alumnado de ${CT()} (${edadTxt()} años). Personas diversas (edades, culturas, capacidades, modelos familiares), sin estereotipos. Sin logotipos de marcas ni personajes conocidos.`;
 }
 const area = () => v(S.area, EN() ? "[subject]" : "[área o materia]");
 function pPortada() {
-  return EN() ? `Generate the cover illustration for an OER on ${area()} for ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  return EN() ? `Generate the cover illustration for an OER on ${area()} for ${CT()}.
 
 OER TITLE: ${v(S.titulo, "[write the title]")}
 WHAT IT SHOULD SHOW: [describe the scene that sums up the topic]
@@ -887,7 +907,7 @@ Along with the image, give me:
 - Alternative text of at most 125 characters describing what matters.
 - An attribution line: “Image generated with [tool] by ${v(S.nombre, "[author]")}. CC BY-SA 4.0”.
 Mind the contrast and make sure nothing important depends on colour alone.`
-  : `Genera la ilustración de portada de un REA de ${area()} para ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  : `Genera la ilustración de portada de un REA de ${area()} para ${CT()}.
 
 TÍTULO DEL REA: ${v(S.titulo, "[escribe el título]")}
 QUÉ DEBE MOSTRAR: [describe la escena que resume el tema]
@@ -903,7 +923,7 @@ Además de la imagen, dame:
 Cuida el contraste y que nada importante dependa solo del color.`;
 }
 function pImagen() {
-  return EN() ? `Generate an illustration for a subsection of an OER on ${area()} for ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  return EN() ? `Generate an illustration for a subsection of an OER on ${area()} for ${CT()}.
 
 IMAGE BRIEF: [paste here the “IMAGE n” brief from the Improve text prompt. If you do not have one, describe what the image must show and which idea it must help understand]
 
@@ -916,7 +936,7 @@ Along with the image, give me:
 - Alternative text of at most 125 characters describing what matters.
 - An attribution line: “Image generated with [tool] by ${v(S.nombre, "[author]")}. CC BY-SA 4.0”.
 Mind the contrast and make sure nothing important depends on colour alone.`
-  : `Genera una ilustración para un apartado de un REA de ${area()} para ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  : `Genera una ilustración para un apartado de un REA de ${area()} para ${CT()}.
 
 ENCARGO DE IMAGEN: [pega aquí el encargo «IMAGEN n» que te dio el prompt de Mejora del texto. Si no lo tienes, describe qué debe mostrar la imagen y qué idea debe ayudar a entender]
 
@@ -932,7 +952,7 @@ Cuida el contraste y que nada importante dependa solo del color.`;
 }
 function pInfo() {
   const pal = S.etapa === "primaria" && perfil(S.etapa, S.curso).ciclo === 1 ? 4 : 6;
-  return EN() ? `I want an infographic for a subsection of an OER on ${area()} for ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  return EN() ? `I want an infographic for a subsection of an OER on ${area()} for ${CT()}.
 
 INFOGRAPHIC BRIEF: [paste here the “INFOGRAPHIC n” brief from the Improve text prompt, or the text of the subsection]
 
@@ -949,7 +969,7 @@ Along with the image, give me:
 - An attribution line: “Image generated with [tool] by ${v(S.nombre, "[author]")}. CC BY-SA 4.0”.
 Mind the contrast and make sure nothing important depends on colour alone.
 - Also a long description (3-5 lines) with all the information in the infographic, to place under it in eXeLearning.`
-  : `Quiero una infografía para un apartado de un REA de ${area()} para ${L(ETAPAS[S.etapa].n)}, ${CT()}.
+  : `Quiero una infografía para un apartado de un REA de ${area()} para ${CT()}.
 
 ENCARGO DE INFOGRAFÍA: [pega aquí el encargo «INFOGRAFÍA n» que te dio el prompt de Mejora del texto, o el texto del apartado]
 
@@ -1096,27 +1116,29 @@ function traducir() {
   const nombres = t("nav");
   $("#arbol").innerHTML = nombres.map((n, i) => (i === 6 ? `<li class="sep" aria-hidden="true"></li>` : "") +
     `<li><a href="#" data-f="${i}"><span class="n">${i === 0 ? "★" : i <= 5 ? i : i === 6 ? "⚙" : "i"}</span><span class="t">${n}</span></a></li>`).join("");
-  $("#s_etapa").innerHTML = Object.entries(ETAPAS).map(([k, e]) => `<option value="${k}">${L(e.n)}</option>`).join("");
   pintar(); marcarFase(); pintarInicio();
   $("#avisoPrevia").classList.toggle("hidden", !PREVIA);
 }
 function pintar() {
-  const E = ETAPAS[S.etapa];
   normCursos();
-  $("#s_etapa").value = S.etapa;
-  // Un desplegable por curso; «Añadir curso» suma otro desplegable con el siguiente curso libre.
-  const libres = E.cursos.filter(c => !S.cursos.includes(c));
-  $("#s_cursos").innerHTML = S.cursos.map((c, k) => {
-    const opciones = E.cursos.filter(x => x === c || !S.cursos.includes(x));
-    return `<div class="fila-curso"><select data-idx="${k}" ${k === 0 ? 'id="s_curso"' : `aria-label="${t("curso")} ${k + 1}"`}>${opciones.map(x => `<option value="${x}"${x === c ? " selected" : ""}>${ord(x)}</option>`).join("")}</select>${k > 0 ? `<button class="quitar" data-quitar="${k}" aria-label="${t("quitar")} ${ord(c)}">×</button>` : ""}</div>`;
+  const E = ETAPAS[S.etapa];
+  // Un solo desplegable con todos los cursos (agrupados por etapa) y el botón Añadir.
+  const libres = NIVELES.filter(n => !S.niveles.includes(n.id));
+  const ultimo = NIVELES.findIndex(n => n.id === S.niveles[S.niveles.length - 1]);
+  const sugerido = (NIVELES.slice(ultimo + 1).find(n => !S.niveles.includes(n.id)) || libres[0] || {}).id;
+  $("#s_nivel").innerHTML = Object.keys(ETAPAS).map(e => {
+    const ops = libres.filter(n => n.etapa === e);
+    return ops.length ? `<optgroup label="${esc(L(ETAPAS[e].n))}">${ops.map(n => `<option value="${n.id}"${n.id === sugerido ? " selected" : ""}>${nivelTxt(n.id, EN())}</option>`).join("")}</optgroup>` : "";
   }).join("");
-  $("#btnAddCurso").classList.toggle("hidden", !libres.length);
+  $("#s_nivel").disabled = $("#btnAddCurso").disabled = !libres.length;
+  const solo = S.niveles.length === 1;
+  $("#s_cursos").innerHTML = S.niveles.map(id => `<li class="${solo ? "solo" : ""}"><span>${nivelTxt(id, EN())}</span>${solo ? "" : `<button class="quitar" data-quitar="${id}" aria-label="${t("quitar")} ${nivelTxt(id, EN())}">×</button>`}</li>`).join("");
   $("#s_titulo").value = S.titulo || "";
   $("#l_area").textContent = L(E.area);
   $("#s_area").value = S.area;
   $("#s_area").placeholder = esFP(S.etapa) ? (EN() ? "Computer hardware · Microcomputer Systems and Networks" : "Montaje y mantenimiento de equipos · SMR") : (EN() ? "Spanish Language and Literature" : "Lengua Castellana y Literatura");
   $("#estructura").innerHTML = estructura(S.etapa, S.curso).map(s => `<li>${esc(L(s.titulo))}${s.apartados ? ` <span class="opt">(${s.apartados} ${EN() ? "subsections" : "apartados"}${s.demuestra ? (EN() ? " and «" : " y «") + esc(L(s.demuestra)) + "»" : ""})</span>` : ""}</li>`).join("");
-  $("#topCtx").textContent = `· ${S.titulo ? S.titulo + " · " : ""}${L(E.n)}, ${cursosTxt(S.cursos, EN(), false)}${S.area ? " · " + S.area : ""}`;
+  $("#topCtx").textContent = `· ${S.titulo ? S.titulo + " · " : ""}${nivelesTxt(S.niveles, EN())}${S.area ? " · " + S.area : ""}`;
   Object.entries(PROMPTS).forEach(([id, fn]) => $("#" + id).textContent = fn());
   pintarChecklist();
   guardarEstado();
@@ -1143,16 +1165,10 @@ document.addEventListener("click", e => {
 $("#ant").addEventListener("click", () => ir(S.fase - 1));
 $("#sig").addEventListener("click", () => ir(S.fase + 1));
 window.addEventListener("hashchange", () => { const i = HASH.indexOf(location.hash.slice(1)); if (i >= 0 && i !== S.fase) ir(i); });
-$("#s_etapa").addEventListener("change", e => { S.etapa = e.target.value; S.cursos = [ETAPAS[S.etapa].cursos[0]]; pintar(); });
-$("#btnAddCurso").addEventListener("click", () => {
-  const todos = ETAPAS[S.etapa].cursos, max = Math.max(...S.cursos.map(Number));
-  const libre = todos.find(c => +c > max && !S.cursos.includes(c)) || todos.find(c => !S.cursos.includes(c));
-  if (libre) { S.cursos.push(libre); pintar(); const sels = $$("#s_cursos select"); sels[sels.length - 1].focus(); }
-});
-$("#s_cursos").addEventListener("change", e => { const k = +e.target.dataset.idx; S.cursos[k] = e.target.value; pintar(); });
+$("#btnAddCurso").addEventListener("click", () => { const id = $("#s_nivel").value; if (id && !S.niveles.includes(id)) { S.niveles.push(id); pintar(); } });
 $("#s_cursos").addEventListener("click", e => {
-  const b = e.target.closest("[data-quitar]"); if (!b) return;
-  S.cursos.splice(+b.dataset.quitar, 1); pintar();
+  const b = e.target.closest("[data-quitar]"); if (!b || S.niveles.length < 2) return;
+  S.niveles = S.niveles.filter(id => id !== b.dataset.quitar); pintar(); $("#s_nivel").focus();
 });
 $("#s_titulo").addEventListener("input", e => { S.titulo = e.target.value; pintar(); });
 $("#s_area").addEventListener("input", e => { S.area = e.target.value; pintar(); });
@@ -1289,9 +1305,11 @@ function leer(raw, msgs) {
   const cursosXml = String(root.getAttribute("curso") || "").split(/[,;\s]+/).filter(c => ETAPAS[etapa].cursos.includes(c));
   const cursos = cursosXml.length ? ETAPAS[etapa].cursos.filter(c => cursosXml.includes(c)) : (etapa === S.etapa ? S.cursos.slice() : [ETAPAS[etapa].cursos[0]]);
   const curso = cursos[0];
+  const nivXml = String(root.getAttribute("niveles") || "").split(/[,;\s]+/).filter(id => NIVELES.some(n => n.id === id));
+  const niveles = nivXml.length ? NIVELES.map(n => n.id).filter(id => nivXml.includes(id)) : cursos.map(c => `${etapa}-${c}`);
   const idioma = root.getAttribute("idioma") === "en" ? "en" : (root.getAttribute("idioma") === "es" ? "es" : S.lang);
   const est = estructura(etapa, curso), Li = o => (o && o[idioma]) || o;
-  const rea = { titulo: v(root.getAttribute("titulo"), v(S.titulo, idioma === "en" ? "Untitled OER" : "REA sin título")), etapa, curso, cursos, idioma,
+  const rea = { titulo: v(root.getAttribute("titulo"), v(S.titulo, idioma === "en" ? "Untitled OER" : "REA sin título")), etapa, curso, cursos, niveles, idioma,
     area: v(root.getAttribute("area"), S.area), autor: v(root.getAttribute("autor"), S.nombre),
     descripcion: (hijo(root, "descripcion") || {}).textContent || "", claves: (hijo(root, "palabras_clave") || {}).textContent || "", secciones: [] };
   [...root.children].filter(c => c.tagName === "seccion").forEach(s => {
@@ -1321,7 +1339,7 @@ function leer(raw, msgs) {
 function fichaAuto(r) {
   const en = r.idioma === "en", f = (a, b) => `<tr><th>${a}</th><td>${esc(b)}</td></tr>`;
   return { tipo: "ficha", titulo: en ? "Resource information" : "Ficha del recurso", docente: "", apartados: [],
-    alumnado: `<table><tbody>${f(en ? "Title" : "Título", r.titulo)}${f(en ? "Stage and year" : "Etapa y curso", `${ETAPAS[r.etapa].n[r.idioma]} · ${cursosTxt(r.cursos, en, false)}`)}${f(en ? "Subject" : "Área o materia", r.area)}${f(en ? "Description" : "Descripción", r.descripcion)}${f(en ? "Author and licence" : "Autoría y licencia", (r.autor || "") + " · CC BY-SA 4.0")}</tbody></table>` };
+    alumnado: `<table><tbody>${f(en ? "Title" : "Título", r.titulo)}${f(en ? "Stage and year" : "Etapa y curso", nivelesTxt(r.niveles, en))}${f(en ? "Subject" : "Área o materia", r.area)}${f(en ? "Description" : "Descripción", r.descripcion)}${f(en ? "Author and licence" : "Autoría y licencia", (r.autor || "") + " · CC BY-SA 4.0")}</tbody></table>` };
 }
 
 /* ================= Convierte: content.xml (ODE 2.0) ================= */
@@ -1355,7 +1373,7 @@ function pagina(item, padre, orden, en) {
 function contentXml(r) {
   usados.clear();
   const en = r.idioma === "en";
-  const props = [["pp_title", r.titulo], ["pp_subtitle", `${r.area ? r.area + " · " : ""}${ETAPAS[r.etapa].n[r.idioma]}, ${cursosTxt(r.cursos, r.idioma === "en", false)}`], ["pp_author", r.autor], ["pp_description", r.descripcion.trim()],
+  const props = [["pp_title", r.titulo], ["pp_subtitle", `${r.area ? r.area + " · " : ""}${nivelesTxt(r.niveles, r.idioma === "en")}`], ["pp_author", r.autor], ["pp_description", r.descripcion.trim()],
     ["pp_lang", r.idioma], ["pp_license", "creative commons: attribution - share alike 4.0"], ["pp_licenseUrl", "https://creativecommons.org/licenses/by-sa/4.0/"],
     ["pp_keywords", r.claves.trim()], ["pp_theme", "base"], ["pp_addExeLink", "true"], ["pp_addPagination", "true"], ["pp_addSearchBox", "false"],
     ["pp_addAccessibilityToolbar", "true"], ["pp_addMathJax", "false"], ["exportSource", "true"]];
