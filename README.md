@@ -9,7 +9,7 @@ REAnima ayuda a los docentes a romper el bloqueo inicial al crear un Recurso Edu
 - Sin servidor: los datos se guardan solo en el navegador de cada usuario.
 - Se usa como aplicación instalada (PWA): la instalación es el último paso obligatorio de la bienvenida. Después se abre desde su icono, en su propia ventana y también sin conexión.
 
-Autoría: Ángel Luis González Serrano · angel@gmail.com
+Autoría: Ángel Luis González Serrano · angel.lamenor@gmail.com
 Proyecto sin ánimo de lucro, hecho para ayudar a docentes. Es solo un complemento para potenciar el trabajo del docente: no sustituye al docente ni a los materiales habituales del aula, como libros de texto o manuales.
 
 ## Publicarlo en GitHub Pages
@@ -31,4 +31,4 @@ La instalación es obligatoria: en una pestaña normal del navegador, REAnima so
 
 ## Actualizar
 
-Sube los archivos nuevos al repositorio. Si cambias `index.html`, cambia también el nombre de la caché en `sw.js` (por ejemplo `reanima-v3` → `reanima-v4`) para que los usuarios reciban la versión nueva.
+Sube los archivos nuevos al repositorio. Si cambias `index.html`, cambia también el nombre de la caché en `sw.js` (por ejemplo `reanima-v9` → `reanima-v10`) para que los usuarios reciban la versión nueva.
