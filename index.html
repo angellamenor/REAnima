@@ -103,6 +103,10 @@ a{color:var(--btn)}
 .pie-nav{display:flex;justify-content:space-between;margin-top:24px}
 .consejo{background:var(--mint-soft);border-radius:10px;padding:12px 16px;margin:0 0 14px;font-size:15px}
 .consejo p{margin:0}
+details.ayuda{border:0;margin:0 0 14px;padding:0}
+details.ayuda summary{color:var(--btn);font-weight:600}
+details.ayuda > div{margin-top:8px;font-size:15px;color:var(--muted)}
+details.ayuda p{margin:0 0 6px}
 .ventajas{list-style:none;padding:0;margin:14px 0}
 .ventajas li{position:relative;padding-left:30px;margin:8px 0}
 .ventajas li::before{content:"✓";position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--mint);color:#132032;font-weight:800;font-size:13px;display:grid;place-items:center}
@@ -213,7 +217,6 @@ a{color:var(--btn)}
 <section class="fase" id="f0">
   <h1 data-t="f0_t"></h1>
   <p class="lead" data-t="f0_p"></p>
-  <div class="consejo" data-t="f0_tip"></div>
   <div class="card">
     <label for="s_nivel" data-t="curso"></label>
     <div class="add"><select id="s_nivel"></select><button class="btn sec" id="btnAddCurso" data-t="anadir"></button></div>
@@ -228,29 +231,30 @@ a{color:var(--btn)}
     <ol class="estructura" id="estructura"></ol>
     <p class="nota" data-t="f0_ref"></p>
   </div>
+  <details class="ayuda"><summary data-t="f0_tip_s"></summary><div data-t="f0_tip"></div></details>
   <p class="nota" data-t="privacidad"></p>
 </section>
 
 <section class="fase" id="f1">
   <h1 data-t="f1_t"></h1>
   <p class="lead" data-t="f1_p"></p>
-  <div class="consejo" data-t="f1_tip"></div>
   <div class="card">
     <ol class="pasos" data-tl="f1_pasos"></ol>
     <div class="fila"><button class="btn" data-copy="prompt1" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="prompt1"></pre></details>
   </div>
+  <details class="ayuda"><summary data-t="f1_tip_s"></summary><div data-t="f1_tip"></div></details>
 </section>
 
 <section class="fase" id="f2">
   <h1 data-t="f2_t"></h1>
   <p class="lead" data-t="f2_p"></p>
-  <div class="consejo" data-t="f2_tip"></div>
   <div class="card">
     <ol class="pasos" data-tl="f2_pasos"></ol>
     <div class="fila"><button class="btn" data-copy="prompt2" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="prompt2"></pre></details>
   </div>
+  <details class="ayuda"><summary data-t="f2_tip_s"></summary><div data-t="f2_tip"></div></details>
 </section>
 
 <section class="fase" id="f3">
@@ -263,19 +267,19 @@ a{color:var(--btn)}
     <ul class="res" id="res"></ul>
   </div>
   <p class="nota" data-t="f3_nota"></p>
-  <div class="consejo" style="margin-top:14px" data-t="f3_tip"></div>
+  <details class="ayuda"><summary data-t="f3_tip_s"></summary><div data-t="f3_tip"></div></details>
 </section>
 
 <section class="fase" id="f4">
   <h1 data-t="f4_t"></h1>
   <p class="lead" data-t="f4_p"></p>
-  <div class="consejo" data-t="f4_tip"></div>
   <h2 class="bloque" data-t="f4_texto"></h2>
   <div class="card">
     <ol class="pasos" data-tl="f4_pasos"></ol>
     <div class="fila"><button class="btn" data-copy="prompt4" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="prompt4"></pre></details>
   </div>
+  <details class="ayuda"><summary data-t="f4_tip_s"></summary><div data-t="f4_tip"></div></details>
   <h2 class="bloque" data-t="f4_mm"></h2>
   <p class="nota" style="margin:-4px 0 12px" data-t="f4_mm_p"></p>
   <div class="card"><h2 data-t="mm_portada"></h2><p class="nota" style="margin:0" data-t="mm_portada_d"></p>
@@ -293,13 +297,13 @@ a{color:var(--btn)}
 <section class="fase" id="f5">
   <h1 data-t="f5_t"></h1>
   <p class="lead" data-t="f5_p"></p>
-  <div class="consejo" data-t="f5_tip"></div>
   <h2 class="bloque" data-t="f5_ia"></h2>
   <div class="card">
     <ol class="pasos" data-tl="f5_pasos"></ol>
     <div class="fila"><button class="btn" data-copy="prompt5" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="prompt5"></pre></details>
   </div>
+  <details class="ayuda"><summary data-t="f5_tip_s"></summary><div data-t="f5_tip"></div></details>
   <h2 class="bloque" data-t="f5_tu"></h2>
   <p class="nota" style="margin:-4px 0 12px" data-t="f5_tu_p"></p>
   <div class="card" id="checklist"></div>
@@ -381,67 +385,67 @@ const T = {
   lema: { es: "Contra el REA en blanco", en: "Beat the blank OER" },
   continuar: { es: "Continuar", en: "Continue" }, atras: { es: "Atrás", en: "Back" }, empezar: { es: "Empezar", en: "Start" },
   anterior: { es: "← Anterior", en: "← Previous" }, siguiente: { es: "Siguiente →", en: "Next →" },
-  copiar: { es: "Copiar prompt", en: "Copy prompt" }, ver: { es: "Ver el prompt (solo si tienes curiosidad)", en: "Show the prompt (only if you're curious)" },
-  copiado: { es: "¡Copiado! Ahora pégalo en tu IA", en: "Copied! Now paste it into your AI" }, guardar: { es: "Guardar", en: "Save" }, guardado: { es: "¡Guardado!", en: "Saved!" },
+  copiar: { es: "Copiar prompt", en: "Copy prompt" }, ver: { es: "Ver el prompt", en: "Show the prompt" },
+  copiado: { es: "Copiado. Ahora pégalo en tu IA", en: "Copied. Now paste it into your AI" }, guardar: { es: "Guardar", en: "Save" }, guardado: { es: "Guardado", en: "Saved" },
   instalar: { es: "Instalar REAnima", en: "Install REAnima" },
   in4_t: { es: "Último paso: instala REAnima", en: "Last step: install REAnima" },
-  in4_p: { es: "Es solo un clic y apenas ocupa espacio. Tendrás REAnima con su icono en el escritorio o en la pantalla de inicio, se abrirá en su propia ventana y funcionará incluso sin conexión.", en: "It's just one click and takes up almost no space. You'll have REAnima with its icon on your desktop or home screen, it will open in its own window and it will work even offline." },
+  in4_p: { es: "Un clic y tendrás REAnima con su icono en el escritorio o el móvil. Funciona incluso sin conexión.", en: "One click and you'll have REAnima with its icon on your desktop or phone. It even works offline." },
   in4_btn: { es: "Instalar REAnima", en: "Install REAnima" },
-  in4_hecho: { es: "¡Listo, ya la tienes! Ábrela desde su icono en el escritorio o en la pantalla de inicio. Ya puedes cerrar esta pestaña.", en: "Done, it's yours! Open it from its icon on your desktop or home screen. You can close this tab now." },
-  in4_ios: { es: "En iPhone o iPad: pulsa el botón Compartir de Safari y elige «Añadir a pantalla de inicio». Después abre REAnima desde su icono.", en: "On iPhone or iPad: tap Safari’s Share button and choose “Add to Home Screen”. Then open REAnima from its icon." },
-  in4_otro: { es: "¿No ves el botón? Abre esta página con Google Chrome o Microsoft Edge y pulsa el icono de instalar que aparece en la barra de direcciones (o menú ⋮ → «Instalar REAnima» / «Añadir a pantalla de inicio»). Firefox y Safari en Mac no instalan aplicaciones web.", en: "Can't see the button? Open this page in Google Chrome or Microsoft Edge and click the install icon in the address bar (or menu ⋮ → “Install REAnima” / “Add to Home screen”). Firefox and Safari on Mac do not install web apps." },
+  in4_hecho: { es: "Instalada. Ábrela desde su icono; ya puedes cerrar esta pestaña.", en: "Installed. Open it from its icon; you can close this tab now." },
+  in4_ios: { es: "En iPhone o iPad: pulsa el botón Compartir de Safari y elige “Añadir a pantalla de inicio”. Después abre REAnima desde su icono.", en: "On iPhone or iPad: tap Safari’s Share button and choose “Add to Home Screen”. Then open REAnima from its icon." },
+  in4_otro: { es: "¿No ves el botón? Abre esta página con Google Chrome o Microsoft Edge y pulsa el icono de instalar que aparece en la barra de direcciones (o menú ⋮ → “Instalar REAnima” / “Añadir a pantalla de inicio”). Firefox y Safari en Mac no instalan aplicaciones web.", en: "Can't see the button? Open this page in Google Chrome or Microsoft Edge and click the install icon in the address bar (or menu ⋮ → “Install REAnima” / “Add to Home screen”). Firefox and Safari on Mac do not install web apps." },
   in4_preview: { es: "Vista previa: aquí no se puede instalar. Publicada en GitHub, este paso será obligatorio.", en: "Preview: installing is not possible here. Once published on GitHub, this step is mandatory." },
   preview: { es: "Vista previa sin instalar. La versión publicada solo funciona instalada.", en: "Preview without installing. The published version only works once installed." },
   pie_side: { es: "Sin ánimo de lucro. Hecho por un docente, para docentes.", en: "Non-profit. Made by a teacher, for teachers." },
-  in1_t: { es: "Tu primer REA está más cerca de lo que crees", en: "Your first OER is closer than you think" },
-  in1_p: { es: "A todos nos ha pasado: abrimos un documento nuevo para crear un recurso y nos quedamos mirando la página en blanco. REAnima te acompaña paso a paso para pasar de tu programación o situación de aprendizaje a un primer REA en eXeLearning. La IA hace el trabajo pesado y tú te quedas con lo que de verdad importa: tus ejemplos, tus actividades, tu forma de enseñar.", en: "We've all been there: you open a new document to create a resource and end up staring at a blank page. REAnima walks you step by step from your lesson plan or learning situation to a first OER in eXeLearning. The AI does the heavy lifting and you keep what really matters: your examples, your activities, your way of teaching." },
-  in1_req: { es: "<b>Solo necesitas dos cosas:</b> una IA de chat, la que ya uses (ChatGPT, Gemini, Claude, Copilot…), mejor si te deja adjuntar archivos y no te limita mucho los mensajes; y eXeLearning 3, el programa gratuito donde abrirás tu REA.", en: "<b>You only need two things:</b> a chat AI, whichever you already use (ChatGPT, Gemini, Claude, Copilot…), ideally one that lets you attach files and doesn't limit your messages much; and eXeLearning 3, the free program where you'll open your OER." },
-  in2_t: { es: "Unas reglas sencillas antes de empezar", en: "A few simple rules before you start" },
-  in2_p: { es: "REAnima es tu ayudante: te da las instrucciones para tu IA y convierte lo que te responda en un archivo de eXeLearning. Para que todo salga bien:", en: "REAnima is your helper: it gives you the instructions for your AI and turns its answer into an eXeLearning file. For everything to go well:" },
-  in2_items: { es: ["La IA es muy útil, pero a veces se equivoca: échale un ojo a todo antes de llevarlo al aula.", "El REA es tuyo: tú eres el autor y quien decide. REAnima es un complemento para potenciar tu trabajo; no sustituye al docente ni a los materiales habituales del aula, como libros de texto o manuales.", "No compartas con la IA datos personales de tu alumnado.", "Tus datos se quedan contigo: REAnima no los envía a ningún servidor, todo se guarda en este navegador."], en: ["AI is very useful, but sometimes it gets things wrong: have a look at everything before taking it to class.", "The OER is yours: you are the author and the one who decides. REAnima is a complement to boost your work; it does not replace the teacher or the usual classroom materials, such as textbooks or manuals.", "Do not share your students' personal data with the AI.", "Your data stays with you: REAnima does not send it to any server, everything is stored in this browser."] },
-  in2_ok: { es: "Entendido. Sé que es una herramienta de IA y acepto estas condiciones.", en: "Got it. I know this is an AI tool and I accept these terms." },
+  in1_t: { es: "Tu primer REA, más fácil de lo que piensas", en: "Your first OER, easier than you think" },
+  in1_p: { es: "Empezar un REA desde cero cuesta. REAnima te lleva de tu programación a un primer REA en eXeLearning: la IA hace el trabajo pesado y tú pones lo que de verdad importa, tu forma de enseñar.", en: "Starting an OER from scratch is hard. REAnima takes you from your lesson plan to a first OER in eXeLearning: the AI does the heavy lifting and you add what really matters, your way of teaching." },
+  in1_req: { es: "<b>Necesitas:</b> una IA de chat (ChatGPT, Gemini, Claude, Copilot...), mejor si deja adjuntar archivos, y eXeLearning 3, que es gratuito.", en: "<b>You need:</b> a chat AI (ChatGPT, Gemini, Claude, Copilot...), ideally one that accepts file uploads, and eXeLearning 3, which is free." },
+  in2_t: { es: "Antes de empezar", en: "Before you start" },
+  in2_p: { es: "REAnima te da las instrucciones para tu IA y convierte su respuesta en un archivo de eXeLearning. Ten en cuenta:", en: "REAnima gives you the instructions for your AI and turns its answer into an eXeLearning file. Keep in mind:" },
+  in2_items: { es: ["La IA a veces se equivoca: revisa todo antes de usarlo en clase.", "Tú eres el autor y quien decide. REAnima es un complemento para potenciar tu trabajo: no sustituye al docente ni a los materiales habituales del aula, como libros de texto o manuales.", "No compartas con la IA datos personales del alumnado.", "Tus datos no salen de este navegador."], en: ["AI sometimes gets things wrong: check everything before using it in class.", "You are the author and you decide. REAnima is a complement to boost your work: it does not replace the teacher or the usual classroom materials, such as textbooks or manuals.", "Do not share students' personal data with the AI.", "Your data never leaves this browser."] },
+  in2_ok: { es: "Entendido, acepto estas condiciones.", en: "Understood, I accept these terms." },
   in3_t: { es: "¿Quién firma tus REA?", en: "Who signs your OERs?" },
-  in3_p: { es: "Tu nombre aparecerá como autor en la ficha de cada REA. Solo hace falta el nombre; lo demás es opcional. Todo se guarda únicamente en este navegador.", en: "Your name will appear as the author on each OER's information sheet. Only your name is needed; the rest is optional. Everything is stored only in this browser." },
+  in3_p: { es: "Tu nombre aparecerá como autor. Lo demás es opcional y solo se guarda en este navegador.", en: "Your name will appear as the author. The rest is optional and only stored in this browser." },
   nombre: { es: "Nombre y apellidos", en: "Full name" }, centro: { es: "Centro educativo", en: "School" },
   localidad: { es: "Localidad", en: "Town / city" }, provincia: { es: "Provincia", en: "Province / region" }, pais: { es: "País", en: "Country" },
   obligatorio: { es: "Escribe tu nombre para continuar.", en: "Enter your name to continue." },
   nav: { es: ["Tu REA", "Analiza", "Crea", "Convierte", "Mejora", "Valida", "Ajustes", "Acerca de"], en: ["Your OER", "Analyse", "Create", "Convert", "Improve", "Validate", "Settings", "About"] },
   f0_t: { es: "Tu REA", en: "Your OER" },
-  f0_p: { es: "Empecemos por lo básico: ¿para qué curso es y de qué va? Con esto, REAnima prepara las instrucciones para tu IA a tu medida.", en: "Let's start with the basics: which year is it for and what is it about? With this, REAnima tailors the instructions for your AI." },
+  f0_p: { es: "¿Para qué curso es y de qué va? Con esto adaptamos las instrucciones para tu IA.", en: "Which year is it for and what is it about? We use this to tailor the instructions for your AI." },
   etapa: { es: "Etapa", en: "Stage" }, curso: { es: "Curso o cursos", en: "Year or years" }, anadir: { es: "Añadir", en: "Add" }, quitar: { es: "Quitar", en: "Remove" },
-  titulo: { es: "Título del REA", en: "OER title" }, titulo_opt: { es: "(opcional: si aún no lo tienes, la IA te propondrá uno)", en: "(optional: if you don't have one yet, the AI will suggest one)" },
-  f0_est: { es: "Tu REA tendrá estas secciones (ya organizadas para ti)", en: "Your OER will have these sections (already organised for you)" },
+  titulo: { es: "Título del REA", en: "OER title" }, titulo_opt: { es: "(opcional)", en: "(optional)" },
+  f0_est: { es: "Tu REA tendrá estas secciones", en: "Your OER will have these sections" },
   f0_ref: { es: "Estructura inspirada en la de proyectos REA de referencia como EDIA (INTEF/Cedec) y CREA (Junta de Extremadura), parte de la OER Dynamic Coalition de la UNESCO. Los REA que crea REAnima se alinean con la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.", en: "Structure inspired by leading OER projects such as EDIA (INTEF/Cedec) and CREA (Junta de Extremadura), part of the UNESCO OER Dynamic Coalition. The OERs created with REAnima are aligned with the Spanish standard UNE 71362 on the quality of digital educational materials." },
-  privacidad: { es: "Recuerda: no pegues en la IA datos personales de tu alumnado. Basta con tu programación o situación de aprendizaje.", en: "Remember: do not paste students' personal data into the AI. Your lesson plan or learning situation is all it needs." },
+  privacidad: { es: "No pegues en la IA datos personales del alumnado.", en: "Do not paste students' personal data into the AI." },
   f1_t: { es: "1 · Analiza", en: "1 · Analyse" },
-  f1_p: { es: "Le enseñamos a la IA tu programación o situación de aprendizaje. Ella la lee y te dice si da para un REA o si conviene repartirla en varios, y qué irá en cada uno. Tú solo copias, pegas y respondes a lo que te pregunte.", en: "We show the AI your lesson plan or learning situation. It reads it and tells you whether it fits one OER or is better split into several, and what goes in each. You just copy, paste and answer its questions." },
-  f1_pasos: { es: ["Abre tu IA (ChatGPT, Gemini, Claude, Copilot…) en otra pestaña y empieza un chat nuevo. Suele ser el botón «Nuevo chat».", "Adjunta tu documento con el clip (📎) o el botón «+». Si no te deja adjuntar, copia el texto del documento y pégalo.", "Vuelve aquí, pulsa «Copiar prompt», pégalo en ese mismo mensaje (Ctrl+V, o mantén pulsado en el móvil) y envíalo.", "Responde a sus preguntas con calma, como si hablaras con un compañero. No cierres ese chat: lo usaremos en la fase 2."], en: ["Open your AI (ChatGPT, Gemini, Claude, Copilot…) in another tab and start a new chat. It's usually the “New chat” button.", "Attach your document with the paperclip (📎) or the “+” button. If you can't attach it, copy the document's text and paste it.", "Come back here, click “Copy prompt”, paste it into that same message (Ctrl+V, or long-press on mobile) and send it.", "Answer its questions calmly, as if you were talking to a colleague. Don't close that chat: we'll use it in step 2."] },
+  f1_p: { es: "La IA lee tu programación y te propone cómo organizar el REA.", en: "The AI reads your lesson plan and suggests how to organise the OER." },
+  f1_pasos: { es: ["Abre un chat nuevo en tu IA.", "Adjunta tu programación o pega su texto.", "Copia este prompt, pégalo y envía.", "Responde a lo que te pregunte. No cierres el chat."], en: ["Open a new chat in your AI.", "Attach your lesson plan or paste its text.", "Copy this prompt, paste it and send.", "Answer its questions. Keep the chat open."] },
   f2_t: { es: "2 · Crea", en: "2 · Create" },
-  f2_p: { es: "Seguimos en el mismo chat. Ahora la IA construye el esqueleto de tu REA: un primer borrador para el alumnado y notas para ti con lo que conviene desarrollar. Te lo devolverá dentro de un recuadro de código. No te asustes: no tienes que entenderlo, solo copiarlo.", en: "We carry on in the same chat. Now the AI builds the skeleton of your OER: a first draft for students and notes for you on what to develop. It will give it back inside a code box. Don't worry: you don't need to understand it, just copy it." },
-  f2_pasos: { es: ["Vuelve al chat de la fase 1, pega este prompt y envíalo.", "La IA te devolverá un recuadro con código. Cópialo entero: casi todas las IA tienen un botón «Copiar» en la esquina del recuadro.", "Pasa a la fase 3 (Convierte) y pégalo allí.", "Si el análisis propuso varios REA, vuelve al chat, escribe «Siguiente REA» y repite."], en: ["Go back to the chat from step 1, paste this prompt and send it.", "The AI will return a box with code. Copy all of it: almost every AI has a “Copy” button in the corner of the box.", "Go to step 3 (Convert) and paste it there.", "If the analysis proposed several OERs, go back to the chat, type “Next OER” and repeat."] },
+  f2_p: { es: "En el mismo chat, la IA prepara el borrador de tu REA.", en: "In the same chat, the AI prepares the draft of your OER." },
+  f2_pasos: { es: ["Pega este prompt en el mismo chat.", "Copia el código que te devuelva (suele tener un botón Copiar).", "Pégalo en la fase 3."], en: ["Paste this prompt in the same chat.", "Copy the code it returns (there's usually a Copy button).", "Paste it in step 3."] },
   f3_t: { es: "3 · Convierte", en: "3 · Convert" },
-  f3_p: { es: "¡Aquí ocurre la magia! Pega el código que te dio la IA y REAnima lo convierte en un archivo de eXeLearning listo para abrir. Todo sucede en tu navegador, sin enviar nada a ningún sitio.", en: "This is where the magic happens! Paste the code the AI gave you and REAnima turns it into an eXeLearning file ready to open. It all happens in your browser, without sending anything anywhere." },
-  f3_label: { es: "Pega aquí el código de la fase 2", en: "Paste the code from step 2 here" },
-  f3_btn: { es: "Crear mi archivo de eXeLearning", en: "Create my eXeLearning file" },
+  f3_p: { es: "Pega el código de la IA y descarga tu archivo de eXeLearning.", en: "Paste the AI's code and download your eXeLearning file." },
+  f3_label: { es: "Código de la fase 2", en: "Code from step 2" },
+  f3_btn: { es: "Crear archivo de eXeLearning", en: "Create eXeLearning file" },
 
-  f3_nota: { es: "Después, abre eXeLearning 3 y elige Archivo → Abrir para cargar el archivo descargado. Verás tu REA con todas sus páginas. En cada una hay un bloque de texto con una nota «Para el docente» arriba (tus pistas para mejorarla) y el borrador debajo. La nota desaparece sola cuando pegas el texto mejorado en la fase 4.", en: "Then open eXeLearning 3 and choose File → Open to load the downloaded file. You'll see your OER with all its pages. Each one has a text block with a “For the teacher” note at the top (your hints to improve it) and the draft below. The note disappears on its own when you paste the improved text in step 4." },
+  f3_nota: { es: "Ábrelo en eXeLearning 3 con Archivo > Abrir. Cada página trae una nota “Para el docente” con pistas, que desaparece al mejorarla en la fase 4.", en: "Open it in eXeLearning 3 with File > Open. Each page has a “For the teacher” note with hints, which disappears when you improve it in step 4." },
   f4_t: { es: "4 · Mejora", en: "4 · Improve" }, f4_texto: { es: "El texto", en: "The text" }, f4_mm: { es: "Imágenes y multimedia", en: "Images and multimedia" },
-  f4_p: { es: "Tu REA ya está en eXeLearning: ¡enhorabuena! Ahora lo vamos puliendo página a página, primero el texto y luego las imágenes. Este es tu momento: aporta lo que solo tú sabes de tu alumnado y de tu aula. Los prompts siguen los criterios de calidad de la norma UNE 71362.", en: "Your OER is now in eXeLearning: congratulations! Now we polish it page by page, first the text and then the images. This is your moment: add what only you know about your students and your classroom. The prompts follow the quality criteria of the UNE 71362 standard." },
-  f4_mm_p: { es: "Para ilustrar tu REA con una IA que cree imágenes. Truco: adjunta siempre tu material de estilo (logo, colores o imágenes de referencia) para que todo el REA tenga el mismo aspecto.", en: "To illustrate your OER with an image-generating AI. Tip: always attach your style material (logo, colours or reference images) so the whole OER looks consistent." },
-  f4_pasos: { es: ["En eXeLearning, abre una página, edita su bloque de texto y copia todo su contenido (también la nota «Para el docente»).", "Copia el prompt de aquí, pégalo en tu IA y rellena las dos partes entre corchetes [ ]: pega ahí ese texto y cuenta lo que quieres añadir o cambiar.", "La IA te devolverá el texto mejorado. En eXeLearning, pulsa el botón de código fuente del editor (<>), borra lo que haya y pega lo nuevo. La nota del docente desaparece.", "Si te propone «Encargos de imagen», úsalos con los prompts de imágenes e infografía de más abajo.", "Repite con la siguiente página."], en: ["In eXeLearning, open a page, edit its text block and copy all of its content (including the “For the teacher” note).", "Copy the prompt from here, paste it into your AI and fill in the two bracketed parts [ ]: paste that text there and say what you want to add or change.", "The AI will return the improved text. In eXeLearning, click the editor's source code button (<>), delete what's there and paste the new text. The teacher note disappears.", "If it suggests “Image briefs”, use them with the image and infographic prompts below.", "Repeat with the next page."] },
+  f4_p: { es: "Mejora tu REA página a página. Aquí entra lo que solo tú sabes de tu aula.", en: "Improve your OER page by page. This is where what only you know about your class comes in." },
+  f4_mm_p: { es: "Con una IA que cree imágenes. Si la IA te dio encargos de imagen, úsalos aquí. Adjunta tu logo o colores para que todo tenga el mismo estilo.", en: "With an image-generating AI. If the AI gave you image briefs, use them here. Attach your logo or colours so everything shares the same style." },
+  f4_pasos: { es: ["En eXeLearning, copia el texto de una página (con la nota “Para el docente”).", "Pega el prompt en tu IA y añade ese texto y lo que quieras cambiar.", "Pega la respuesta en eXeLearning con el botón de código fuente (<>).", "Repite con cada página."], en: ["In eXeLearning, copy a page's text (including the “For the teacher” note).", "Paste the prompt into your AI and add that text and what you want to change.", "Paste the answer into eXeLearning with the source code button (<>).", "Repeat for each page."] },
   f5_t: { es: "5 · Valida", en: "5 · Validate" }, f5_ia: { es: "Revisión con IA", en: "AI review" }, f5_tu: { es: "Tu comprobación final", en: "Your final check" },
-  f5_tu_p: { es: "Lo que solo tú puedes comprobar. Ve marcando cada punto cuando lo revises en eXeLearning. Cuando estén todos… ¡tu REA estará listo para tu alumnado!", en: "What only you can check. Tick each item as you review it in eXeLearning. When they're all done… your OER is ready for your students!" },
-  f5_pasos: { es: ["En eXeLearning, exporta tu REA como «Página web de una sola página» o imprímelo como PDF.", "Abre un chat nuevo en tu IA y adjunta ese archivo.", "Copia este prompt, pégalo y envíalo.", "Corrige en eXeLearning lo que te señale, empezando por las prioridades."], en: ["In eXeLearning, export your OER as a “Single web page” or print it to PDF.", "Open a new chat in your AI and attach that file.", "Copy this prompt, paste it and send it.", "Fix in eXeLearning what it points out, starting with the priorities."] },
-  f5_p: { es: "¡Ya casi está! Antes de llevarlo al aula, comprobamos juntos que tu REA es de calidad, con indicadores basados en la norma UNE 71362: primero la IA lo revisa página a página y en conjunto, y después tú haces la comprobación final.", en: "Almost there! Before taking it to class, we check together that your OER is of good quality, with indicators based on the UNE 71362 standard: first the AI reviews it page by page and as a whole, then you do the final check." },
+  f5_tu_p: { es: "Marca cada punto cuando lo hayas revisado.", en: "Tick each item once you've checked it." },
+  f5_pasos: { es: ["Exporta tu REA desde eXeLearning como página web única o PDF.", "Abre un chat nuevo, adjunta el archivo y pega este prompt.", "Corrige lo que te señale, empezando por lo prioritario."], en: ["Export your OER from eXeLearning as a single web page or PDF.", "Open a new chat, attach the file and paste this prompt.", "Fix what it points out, starting with the priorities."] },
+  f5_p: { es: "Último repaso antes de llevarlo al aula: primero la IA, luego tú.", en: "A last check before taking it to class: first the AI, then you." },
   mm_portada: { es: "Portada", en: "Cover" }, mm_portada_d: { es: "La imagen de la Bienvenida, en vertical como un folio.", en: "The Welcome image, portrait like an A4 page." },
-  mm_imagen: { es: "Imágenes", en: "Images" }, mm_imagen_d: { es: "Ilustraciones para los apartados. Pega el encargo «IMAGEN n» que te dio el prompt de Mejora del texto.", en: "Illustrations for the subsections. Paste the “IMAGE n” brief from the Improve text prompt." },
-  mm_info: { es: "Infografía", en: "Infographic" }, mm_info_d: { es: "Un resumen visual de un apartado. Pega el encargo «INFOGRAFÍA n» del prompt de Mejora del texto.", en: "A visual summary of a subsection. Paste the “INFOGRAPHIC n” brief from the Improve text prompt." },
-  mm_lic: { es: "Bajo cada imagen añade: «Imagen generada con [herramienta] por [tu nombre]. CC BY-SA 4.0». Y echa un vistazo a las condiciones de uso de la herramienta.", en: "Under each image add: “Image generated with [tool] by [your name]. CC BY-SA 4.0”. And take a look at the tool's terms of use." },
+  mm_imagen: { es: "Imágenes", en: "Images" }, mm_imagen_d: { es: "Ilustraciones para los apartados. Pega el encargo “IMAGEN n” que te dio el prompt de Mejora del texto.", en: "Illustrations for the subsections. Paste the “IMAGE n” brief from the Improve text prompt." },
+  mm_info: { es: "Infografía", en: "Infographic" }, mm_info_d: { es: "Un resumen visual de un apartado. Pega el encargo “INFOGRAFÍA n” del prompt de Mejora del texto.", en: "A visual summary of a subsection. Paste the “INFOGRAPHIC n” brief from the Improve text prompt." },
+  mm_lic: { es: "Bajo cada imagen: “Imagen generada con [herramienta] por [tu nombre]. CC BY-SA 4.0”.", en: "Under each image: “Image generated with [tool] by [your name]. CC BY-SA 4.0”." },
   f6_t: { es: "Ajustes", en: "Settings" }, f6_p: { es: "Tus datos de autoría. Puedes cambiarlos cuando quieras.", en: "Your authorship details. You can change them whenever you like." },
   f6_local: { es: "Se guardan solo en este navegador.", en: "Stored only in this browser." },
   f6_reset: { es: "Borrar mis datos y volver a la bienvenida", en: "Delete my data and return to the welcome screens" },
   f7_t: { es: "Acerca de REAnima", en: "About REAnima" },
-  f7_p: { es: "Contra el REA en blanco. Una herramienta hecha por un docente, para docentes.", en: "Beat the blank OER. A tool made by a teacher, for teachers." },
+  f7_p: { es: "Contra el REA en blanco. Hecho por un docente, para docentes.", en: "Beat the blank OER. Made by a teacher, for teachers." },
   f7_autor: { es: "Quién soy", en: "About me" }, f7_contacto: { es: "Contacto:", en: "Contact:" },
   f7_prop: { es: "Propósito", en: "Purpose" },
   f7_prop_p: { es: "REAnima no tiene ánimo de lucro. Su único objetivo es ayudarte a romper el bloqueo inicial al crear un Recurso Educativo Abierto, para que dediques tu energía a la parte creativa. No busca que quien ya domina los REA los haga aún mejores, sino llegar a ese grupo mucho más amplio de docentes que todavía no los usan y les gustaría hacerlo: que juegue todo el equipo, no solo las estrellas. Es un complemento para potenciar tu trabajo: no sustituye al docente ni a los materiales habituales del aula, como los libros de texto o los manuales. Te da un punto de partida que siempre debes revisar, completar y hacer tuyo.", en: "REAnima is non-profit. Its only goal is to help you get past the initial block when creating an Open Educational Resource, so you can put your energy into the creative part. It is not about helping those who already master OERs make them even better, but about reaching the much larger group of teachers who don't use them yet and would like to: the whole team gets to play, not just the stars. It is a complement to boost your work: it does not replace the teacher or the usual classroom materials, such as textbooks or manuals. It gives you a starting point that you should always review, complete and make your own." },
@@ -449,24 +453,30 @@ const T = {
   f7_est_p: { es: "La estructura se inspira en la de proyectos REA de referencia en España, destacando el Proyecto EDIA del INTEF/Cedec y el Proyecto CREA de la Junta de Extremadura, parte de la OER Dynamic Coalition de la UNESCO, adaptada a cada etapa. Los REA se alinean con la norma UNE 71362 de Calidad de los Materiales Educativos Digitales: las fases Mejora y Valida siguen sus criterios. Los archivos se generan en el formato abierto de eXeLearning 3.", en: "The structure is inspired by leading OER projects in Spain, notably the EDIA Project (INTEF/Cedec) and the CREA Project (Junta de Extremadura), part of the UNESCO OER Dynamic Coalition, adapted to each stage. The OERs are aligned with the Spanish standard UNE 71362 on the quality of digital educational materials: the Improve and Validate steps follow its criteria. Files are generated in the open eXeLearning 3 format." },
   f7_priv: { es: "Privacidad", en: "Privacy" },
   f7_priv_p: { es: "REAnima no tiene servidor ni recoge datos. Tus datos y tus REA se quedan en tu navegador. Los prompts los pegas tú en la IA que elijas, bajo sus propias condiciones de uso.", en: "REAnima has no server and collects no data. Your details and OERs stay in your browser. You paste the prompts into the AI of your choice, under its own terms of use." },
-  in1_meta: { es: "<p>⚽ <b>REAnima no está pensada para que el pichichi meta todavía más goles.</b> Muchas herramientas tecnológicas acaban siendo unas botas nuevas para quien ya es la estrella del equipo. Aquí el objetivo es otro: sacar del banquillo a todos los docentes que nunca han creado un REA y les gustaría hacerlo, para que salten al campo y jueguen al nivel de los más innovadores. Si es tu primera vez, esta herramienta es para ti.</p>", en: "<p>⚽ <b>REAnima isn't designed to help the top scorer score even more goals.</b> Many classroom tech tools end up as new boots for whoever is already the team's star. Here the goal is different: to bring off the bench all the teachers who have never created an OER and would like to, so they step onto the pitch and play at the level of the most innovative. If this is your first time, this tool is for you.</p>" },
-  in1_ventajas: { es: "<ul class=\"ventajas\"><li><b>No necesitas ser experto en tecnología.</b> Si sabes abrir un chat, copiar y pegar, ya sabes usar REAnima.</li><li><b>Nunca vas solo.</b> En cada paso te decimos qué copiar, dónde pegarlo y qué hacer con la respuesta.</li><li><b>Un REA de calidad.</b> Todo el proceso sigue los criterios de la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.</li></ul>", en: "<ul class=\"ventajas\"><li><b>You don't need to be a tech expert.</b> If you can open a chat, copy and paste, you can already use REAnima.</li><li><b>You're never on your own.</b> At every step we tell you what to copy, where to paste it and what to do with the answer.</li><li><b>A quality OER.</b> The whole process follows the criteria of the UNE 71362 standard on the quality of digital educational materials.</li></ul>" },
-  f0_tip: { es: "<p>🧭 <b>Así será el camino:</b> 5 fases cortas. En casi todas harás lo mismo: copiar un texto de aquí, pegarlo en tu IA y seguir sus indicaciones. Puedes parar cuando quieras: REAnima recuerda dónde te quedaste.</p>", en: "<p>🧭 <b>Here's the journey:</b> 5 short steps. In almost all of them you'll do the same: copy a text from here, paste it into your AI and follow its lead. You can stop whenever you like: REAnima remembers where you left off.</p>" },
-  f1_tip: { es: "<p>💡 <b>¿Qué es un «prompt»?</b> Solo es el mensaje con las instrucciones para la IA. Ya lo hemos escrito por ti, adaptado a tu curso: no tienes que cambiar nada.</p>", en: "<p>💡 <b>What is a “prompt”?</b> It's simply the message with the instructions for the AI. We've already written it for you, tailored to your year: you don't need to change anything.</p>" },
-  f2_tip: { es: "<p>💡 Si la respuesta se corta a medias, escribe «continúa» en el chat y la IA la terminará. Si algo no te convence, díselo con tus palabras: «haz la bienvenida más divertida», «añade un ejemplo del pueblo»…</p>", en: "<p>💡 If the answer stops halfway, type “continue” in the chat and the AI will finish it. If something doesn't convince you, tell it in your own words: “make the welcome more fun”, “add a local example”…</p>" },
-  f3_tip: { es: "<p>🎉 <b>¡Ya tienes la versión 0 de tu REA!</b> Lo más difícil, empezar, ya está hecho. ¿Aún no tienes eXeLearning? Es gratuito: búscalo como «eXeLearning 3» en tu buscador e instálalo.</p>", en: "<p>🎉 <b>You now have version 0 of your OER!</b> The hardest part, getting started, is done. Don't have eXeLearning yet? It's free: search for “eXeLearning 3” and install it.</p>" },
-  f4_tip: { es: "<p>💡 <b>No necesitas saber HTML.</b> Es solo el formato en que eXeLearning guarda el texto con sus negritas, listas y títulos. Tú copias y pegas; eXeLearning se encarga del resto. Y sin prisa: una página cada vez.</p>", en: "<p>💡 <b>You don't need to know HTML.</b> It's just the format eXeLearning uses to store text with its bold, lists and headings. You copy and paste; eXeLearning does the rest. And no rush: one page at a time.</p>" },
-  f5_tip: { es: "<p>💡 La IA te dará una lista de mejoras. No te agobies: empieza por las prioritarias y ve poco a poco. Un REA nunca está «terminado»; esta es tu versión 1.0 y podrás mejorarla cuando quieras.</p>", en: "<p>💡 The AI will give you a list of improvements. Don't feel overwhelmed: start with the priorities and go step by step. An OER is never “finished”; this is your version 1.0 and you can improve it whenever you like.</p>" },
-  f5_fin: { es: "🎉 ¡Enhorabuena! Tu REA 1.0 está listo. Compártelo con licencia abierta para que otros docentes también puedan disfrutarlo y mejorarlo.", en: "🎉 Congratulations! Your OER 1.0 is ready. Share it under an open licence so other teachers can enjoy and improve it too." },
+  in1_meta: { es: "<p><b>No es para que el pichichi meta más goles.</b> Muchas herramientas acaban siendo botas nuevas para la estrella del equipo. REAnima va al revés: quiere sacar del banquillo a los muchos docentes que aún no han hecho un REA y les gustaría, para que jueguen al nivel de los más innovadores. Si es tu primera vez, es para ti.</p>", en: "<p><b>It's not about helping the top scorer score more goals.</b> Many tools end up as new boots for the team's star. REAnima works the other way round: it wants to bring off the bench the many teachers who haven't made an OER yet and would like to, so they play at the level of the most innovative. If it's your first time, it's for you.</p>" },
+  in1_ventajas: { es: "<ul class=\"ventajas\"><li>Si sabes copiar y pegar en un chat, sabes usarla.</li><li>En cada paso te decimos qué hacer.</li><li>Sigue los criterios de calidad de la norma UNE 71362.</li></ul>", en: "<ul class=\"ventajas\"><li>If you can copy and paste into a chat, you can use it.</li><li>At every step we tell you what to do.</li><li>It follows the quality criteria of the UNE 71362 standard.</li></ul>" },
+  f0_tip: { es: "<p>Son 5 fases cortas. En casi todas copias un texto de aquí, lo pegas en tu IA y sigues sus indicaciones. Puedes parar cuando quieras: REAnima recuerda dónde te quedaste.</p>", en: "<p>There are 5 short steps. In almost all of them you copy a text from here, paste it into your AI and follow along. You can stop at any time: REAnima remembers where you left off.</p>" },
+  f1_tip: { es: "<p>El mensaje con las instrucciones para la IA. Ya está escrito y adaptado a tu curso: no tienes que tocarlo.</p>", en: "<p>The message with the instructions for the AI. It's already written and tailored to your year: you don't need to touch it.</p>" },
+  f2_tip: { es: "<p>No hace falta entender el código, solo copiarlo. Si la respuesta se corta, escribe “continúa”. Si la IA propuso varios REA, cuando termines el primero escribe “Siguiente REA”.</p>", en: "<p>You don't need to understand the code, just copy it. If the answer stops halfway, type “continue”. If the AI proposed several OERs, when you finish the first one type “Next OER”.</p>" },
+  f3_tip: { es: "<p>Es gratuito. Búscalo como “eXeLearning 3” e instálalo en tu ordenador.</p>", en: "<p>It's free. Search for “eXeLearning 3” and install it on your computer.</p>" },
+  f4_tip: { es: "<p>No. Es solo el formato en que eXeLearning guarda negritas, listas y títulos. Tú copias y pegas.</p>", en: "<p>No. It's just the format eXeLearning uses for bold, lists and headings. You just copy and paste.</p>" },
+  f5_tip: { es: "<p>Normal. Empieza por las prioritarias. Un REA nunca está terminado: esta es tu versión 1.0 y podrás mejorarla cuando quieras.</p>", en: "<p>That's normal. Start with the priorities. An OER is never finished: this is your version 1.0 and you can improve it whenever you like.</p>" },
+  f5_fin: { es: "Enhorabuena, tu REA 1.0 está listo. Compártelo con licencia abierta para que otros docentes lo usen y lo mejoren.", en: "Congratulations, your OER 1.0 is ready. Share it under an open licence so other teachers can use and improve it." },
   f7_cargo: { es: "Docente de Formación Profesional de Informática", en: "Vocational Education and Training teacher (Computing)" },
   f7_bio: { es: "<p>¡Hola! Soy ingeniero informático por la Universidad de Castilla-La Mancha. Antes de dedicarme a la docencia trabajé diez años en el sector educativo editorial, como jefe de equipo en editoriales y empresas edtech como Pearson y ODILO, y he participado en organizaciones del sector como ANELE e IPA.</p><p style=\"margin-bottom:0\">Hoy soy docente de Formación Profesional de Informática en el CIFP Virgen de Gracia de Puertollano (Ciudad Real), donde trabajo con proyectos de impacto comunitario, inteligencia artificial y radio educativa, con especial atención a la educación inclusiva y a los recursos educativos abiertos. REAnima nace de ahí: de querer que ningún compañero se quede bloqueado ante la página en blanco.</p>", en: "<p>Hi! I'm a computer engineer from the University of Castilla-La Mancha. Before going into teaching I spent ten years in educational publishing, as a team lead at publishers and edtech companies such as Pearson and ODILO, and I have taken part in sector organisations such as ANELE and IPA.</p><p style=\"margin-bottom:0\">Today I teach Computing in Vocational Education and Training at CIFP Virgen de Gracia in Puertollano (Ciudad Real), where I work on community-impact projects, artificial intelligence and school radio, with a special focus on inclusive education and open educational resources. REAnima was born from that: from wanting no colleague to get stuck in front of a blank page.</p>" },
   f7_prem: { es: "Algunos reconocimientos", en: "Some awards" },
-  f7_premios: { es: ["Top 50 del Global Teacher Prize 2025 (conocido oficiosamente como el «Nobel de la Educación»).", "2.º Docente del Mundo en el Muallem Prize 2026 de la Fundación Bourham.", "UNESCO OER Implementation Award 2020.", "2.º Premio Nacional Experiencias Educativas Inspiradoras 2023 del Ministerio de Educación.", "Reconocimiento en el Día de la Enseñanza de Castilla-La Mancha 2025.", "Premio SIMO 2024.", "Premio Mentes AMI 2026."], en: ["Top 50, Global Teacher Prize 2025 (unofficially known as the “Nobel Prize of Education”).", "2nd Teacher of the World, Muallem Prize 2026 (Bourham Foundation).", "UNESCO OER Implementation Award 2020.", "2nd National Award for Inspiring Educational Experiences 2023, Spanish Ministry of Education.", "Recognition on Castilla-La Mancha Teaching Day 2025.", "SIMO Award 2024.", "Mentes AMI Award 2026."] },
+  f7_premios: { es: ["Top 50 del Global Teacher Prize 2025 (conocido oficiosamente como el “Nobel de la Educación”).", "2.º Docente del Mundo en el Muallem Prize 2026 de la Fundación Bourham.", "UNESCO OER Implementation Award 2020.", "2.º Premio Nacional Experiencias Educativas Inspiradoras 2023 del Ministerio de Educación.", "Reconocimiento en el Día de la Enseñanza de Castilla-La Mancha 2025.", "Premio SIMO 2024.", "Premio Mentes AMI 2026."], en: ["Top 50, Global Teacher Prize 2025 (unofficially known as the “Nobel Prize of Education”).", "2nd Teacher of the World, Muallem Prize 2026 (Bourham Foundation).", "UNESCO OER Implementation Award 2020.", "2nd National Award for Inspiring Educational Experiences 2023, Spanish Ministry of Education.", "Recognition on Castilla-La Mancha Teaching Day 2025.", "SIMO Award 2024.", "Mentes AMI Award 2026."] },
   f7_ledui: { es: "También he creado LEdui", en: "I also created LEdui" },
   f7_ledui_p: { es: "LEdui usa la inteligencia artificial para adaptar contenidos educativos y hacerlos más accesibles e inclusivos para todo el alumnado. Nació como mi Trabajo Fin de Grado en Ingeniería Informática (UCLM), con Carlos González Morcillo como tutor. Si tienes un proyecto educativo en el que LEdui pueda ayudar, me encantará conocerlo.", en: "LEdui uses artificial intelligence to adapt educational content and make it more accessible and inclusive for all students. It began as my Bachelor's thesis in Computer Engineering (UCLM), supervised by Carlos González Morcillo. If you have an educational project where LEdui could help, I'd love to hear about it." },
   f7_ledui_btn: { es: "Conoce LEdui en www.ledui.org", en: "Discover LEdui at www.ledui.org" },
   f7_contacto_t: { es: "Hablemos", en: "Let's talk" },
-  f7_contacto_p: { es: "¿Has creado un REA con REAnima, tienes una idea para mejorarla o quieres colaborar? Escríbeme, me hará mucha ilusión.", en: "Have you created an OER with REAnima, got an idea to improve it or want to collaborate? Write to me, I'd be delighted." }
+  f7_contacto_p: { es: "¿Has hecho un REA con REAnima, tienes una idea para mejorarla o quieres colaborar? Escríbeme.", en: "Made an OER with REAnima, got an idea to improve it or want to collaborate? Write to me." },
+  f0_tip_s: { es: "¿Cómo funciona?", en: "How does it work?" },
+  f1_tip_s: { es: "¿Qué es un prompt?", en: "What is a prompt?" },
+  f2_tip_s: { es: "¿Y si algo falla?", en: "What if something goes wrong?" },
+  f3_tip_s: { es: "¿No tienes eXeLearning?", en: "Don't have eXeLearning?" },
+  f4_tip_s: { es: "¿Tengo que saber HTML?", en: "Do I need to know HTML?" },
+  f5_tip_s: { es: "¿Y si me salen muchas mejoras?", en: "What if I get lots of improvements?" }
 };
 const t = k => L(T[k]) ?? k;
 const ord = c => EN() ? `Year ${c}` : `${c}.º`;
@@ -498,7 +508,7 @@ function normCursos() {
 }
 function nivelTxt(id, en) { const n = NIVELES.find(x => x.id === id); return en ? `${CORTO[n.etapa].en} year ${n.curso}` : `${n.curso}.º de ${CORTO[n.etapa].es}`; }
 function nivelesTxt(lista, en) {
-  // Agrupa por etapa: «1.º y 2.º de Primaria», «6.º de Primaria y 1.º de ESO», «Primary years 1 and 2»
+  // Agrupa por etapa: “1.º y 2.º de Primaria”, “6.º de Primaria y 1.º de ESO”, “Primary years 1 and 2”
   const grupos = [];
   lista.map(id => NIVELES.find(n => n.id === id)).forEach(n => { const g = grupos.find(x => x.etapa === n.etapa); g ? g.cursos.push(n.curso) : grupos.push({ etapa: n.etapa, cursos: [n.curso] }); });
   const partes = grupos.map(g => en ? `${CORTO[g.etapa].en} ${g.cursos.length > 1 ? "years" : "year"} ${listaTxt(g.cursos, true)}` : `${listaTxt(g.cursos.map(c => c + ".º"), false)} de ${CORTO[g.etapa].es}`);
@@ -549,11 +559,11 @@ function estructura(etapa, curso) {
   if (etapa === "primaria") {
     if (p.ciclo === 1) return [
       S_("bienvenida", "¡Hola!", "Hello!", { es: "Un personaje guía (niño, niña o animal) saluda, cuenta algo de su vida relacionado con el tema y lanza una pregunta al alumnado.", en: "A guide character (a child or an animal) says hello, shares something about their life related to the topic and asks the pupils a question." }),
-      S_("aprender", "¿Qué vamos a aprender?", "What will we learn?", { es: "3-5 metas en primera persona que empiezan por «Voy a...».", en: "3-5 goals in the first person starting with “I am going to...”." }),
+      S_("aprender", "¿Qué vamos a aprender?", "What will we learn?", { es: "3-5 metas en primera persona que empiezan por “Voy a...”.", en: "3-5 goals in the first person starting with “I am going to...”." }),
       S_("descubre", "Escucha y descubre", "Listen and discover", { es: "Un apartado por cada bloque de contenido del documento base.", en: "One subsection for each content block in the source document." }, { apartados: "2-4", demuestra: { es: "¡A jugar!", en: "Let's play!" } }),
       S_("observa", "Mira y practica", "Look and practise", { es: "Modelos y ejemplos cercanos para mirar e imitar.", en: "Close-to-home models and examples to look at and imitate." }, { apartados: "2-3" }),
       S_("producto", "¡Manos a la obra!", "Let's do it!", { es: "El producto final en 3-5 pasos numerados muy sencillos.", en: "The final product in 3-5 very simple numbered steps." }),
-      S_("reflexiona", "¿Cómo me ha ido?", "How did I do?", { es: "Autoevaluación con semáforo o caritas y 3-4 frases «He...».", en: "Self-assessment with a traffic light or faces and 3-4 “I have...” sentences." }), ficha];
+      S_("reflexiona", "¿Cómo me ha ido?", "How did I do?", { es: "Autoevaluación con semáforo o caritas y 3-4 frases “He...”.", en: "Self-assessment with a traffic light or faces and 3-4 “I have...” sentences." }), ficha];
     const ci2 = p.ciclo === 2;
     return [
       S_("bienvenida", "Bienvenida", "Welcome", { es: "Una pequeña historia o situación cercana que engancha con el tema.", en: "A short story or familiar situation that hooks pupils into the topic." }),
@@ -686,7 +696,7 @@ Decide si conviene un solo REA o dividirlo en varios. Criterios:
 Justifica la decisión en 2-3 líneas.
 
 3. PROPUESTA DE CADA REA
-Para cada REA (REA 1, REA 2...): título atractivo para el alumnado (si te he dado un título, úsalo para el primer REA), sesiones que cubre, producto final o reto, bloques de contenido (serán los apartados de «Descubre»), ejemplos o prácticas (serán los apartados de «Observa») y ${esFP(S.etapa) ? "resultados de aprendizaje y criterios de evaluación" : "criterios de evaluación"} implicados (con sus códigos si aparecen).
+Para cada REA (REA 1, REA 2...): título atractivo para el alumnado (si te he dado un título, úsalo para el primer REA), sesiones que cubre, producto final o reto, bloques de contenido (serán los apartados de “Descubre”), ejemplos o prácticas (serán los apartados de “Observa”) y ${esFP(S.etapa) ? "resultados de aprendizaje y criterios de evaluación" : "criterios de evaluación"} implicados (con sus códigos si aparecen).
 
 4. ALERTAS
 Solo si las encuentras: incoherencias o partes que parecen copiadas de otro documento, información que falta, obras con derechos de autor, datos personales y actividades poco adecuadas para la edad.
@@ -701,9 +711,9 @@ ${reglas()}
 function prompt2() {
   const est = estructura(S.etapa, S.curso), p = perfil(S.etapa, S.curso), rr = reglasReto(S.etapa);
   const lista = est.map((s, i) => {
-    let x = `${i + 1}. tipo="${s.tipo}" · ${EN() ? "title" : "título"} «${L(s.titulo)}»: ${L(s.que)}`;
+    let x = `${i + 1}. tipo="${s.tipo}" · ${EN() ? "title" : "título"} “${L(s.titulo)}”: ${L(s.que)}`;
     if (s.apartados) x += EN() ? ` It has ${s.apartados} subsections with their own titles.` : ` Lleva entre ${s.apartados} apartados con título propio.`;
-    if (s.demuestra) x += EN() ? ` Its last subsection is tipo="demuestra" titled «${L(s.demuestra)}»: it will hold 3 interactive eXeLearning activities; only leave the teacher note.` : ` Su último apartado es tipo="demuestra" con el título «${L(s.demuestra)}»: ahí irán 3 actividades interactivas de eXeLearning; solo deja la nota para el docente.`;
+    if (s.demuestra) x += EN() ? ` Its last subsection is tipo="demuestra" titled “${L(s.demuestra)}”: it will hold 3 interactive eXeLearning activities; only leave the teacher note.` : ` Su último apartado es tipo="demuestra" con el título “${L(s.demuestra)}”: ahí irán 3 actividades interactivas de eXeLearning; solo deja la nota para el docente.`;
     return x;
   }).join("\n");
   const autor = v(S.nombre, EN() ? "Teacher's name" : "Nombre del docente");
@@ -772,7 +782,7 @@ XML rules:
 - <descripcion>: one paragraph of 2-3 sentences. <palabras_clave>: 5-8 comma-separated words.
 
 ${reglas()}`
-  : `Ahora crea el ESQUELETO del primer REA que has propuesto (o del único), teniendo en cuenta mis respuestas. Cuando te escriba «Siguiente REA», harás lo mismo con el siguiente.
+  : `Ahora crea el ESQUELETO del primer REA que has propuesto (o del único), teniendo en cuenta mis respuestas. Cuando te escriba “Siguiente REA”, harás lo mismo con el siguiente.
 
 ${ctx()}
 
@@ -794,12 +804,12 @@ ${rr ? "\n" + L(rr) + "\nEl reto puede estar algo más completo que el resto (si
 LENGUAJE PARA EL ALUMNADO
 ${L(p.lenguaje)}
 
-Los apartados de Descubre y Observa llevan títulos propios de 3-7 palabras que digan de qué trata cada uno (nunca «Descubre 1»).
+Los apartados de Descubre y Observa llevan títulos propios de 3-7 palabras que digan de qué trata cada uno (nunca “Descubre 1”).
 
 CALIDAD DESDE EL ESQUELETO (UNE 71362)
-- En «¿Qué vamos a aprender?» incluye los objetivos en forma activa, el producto final o reto, los conocimientos previos necesarios y el tiempo estimado.
+- En “¿Qué vamos a aprender?” incluye los objetivos en forma activa, el producto final o reto, los conocimientos previos necesarios y el tiempo estimado.
 - En el producto final o reto, presenta primero qué hay que entregar y sus requisitos numerados.
-- En cada nota «DESARROLLAR:» sugiere qué elemento de apoyo (imagen, esquema, actividad interactiva) encajaría y una conexión con ${esFP(S.etapa) ? "el mundo profesional" : "la vida real del alumnado"}.
+- En cada nota “DESARROLLAR:” sugiere qué elemento de apoyo (imagen, esquema, actividad interactiva) encajaría y una conexión con ${esFP(S.etapa) ? "el mundo profesional" : "la vida real del alumnado"}.
 
 FICHA DEL RECURSO
 En la sección tipo="ficha" escribe dentro de <alumnado> una tabla HTML (<table><tbody><tr><th>...</th><td>...</td></tr>...) con estas filas: ${L(filasFicha(S.etapa))} (${autor} · CC BY-SA 4.0). No lleva <docente>.
@@ -880,31 +890,31 @@ ${ctx()}
 
 Vas a AMPLIAR y DETALLAR una sección de un REA de eXeLearning. El texto actual es solo un esqueleto: conviértelo en una sección completa, de calidad y lista para el alumnado.
 
-TEXTO ACTUAL DE LA SECCIÓN (borrador y nota «Para el docente»)
+TEXTO ACTUAL DE LA SECCIÓN (borrador y nota “Para el docente”)
 [Pega aquí el texto de la sección tal como está en eXeLearning]
 
 LO QUE QUIERO AÑADIR
 [Escribe aquí tus ideas, ejemplos, actividades o lo que no puede faltar. Si no quieres añadir nada, borra esta línea]
 
 CÓMO ESCRIBIRLO (pautas de calidad alineadas con la UNE 71362)
-1. Redacta para el aprendizaje autónomo: imagina que el alumno no tiene a quién preguntar. Al terminar de leer, no debería quedarle ninguna duda. Sigue la nota «Para el docente» (para qué sirve, ideas clave, ejemplos, elementos de apoyo, ojo con...) e incorpora todo lo que el docente quiere añadir.
+1. Redacta para el aprendizaje autónomo: imagina que el alumno no tiene a quién preguntar. Al terminar de leer, no debería quedarle ninguna duda. Sigue la nota “Para el docente” (para qué sirve, ideas clave, ejemplos, elementos de apoyo, ojo con...) e incorpora todo lo que el docente quiere añadir.
 2. El primer párrafo es clave: debe representar la sección entera y decir desde el principio qué va a conseguir o producir el alumnado aquí.
 3. Organización expositiva: de lo simple a lo complejo, párrafos cortos, subtítulos h3, listas cuando ayuden y conectores que orienten la lectura. Todo debe encaminar hacia ${conReto ? "el reto" : "el producto"} final.
-4. Cuadros destacados: añade 1-2 «mensajes que te deja el docente» breves en un <blockquote> (una idea clave, un consejo, un error frecuente que evitar).
+4. Cuadros destacados: añade 1-2 “mensajes que te deja el docente” breves en un <blockquote> (una idea clave, un consejo, un error frecuente que evitar).
 5. Pensamiento crítico: cuando encaje, una pregunta abierta o un debate presentado sin posicionarse, para que cada alumno llegue a su propia opinión.
 6. Conexión con ${mundoES}: al menos un ejemplo concreto.
 7. Aprendizaje activo: propón al menos un momento en el que el alumnado haga algo y reciba retroalimentación. En las autoevaluaciones, retroalimentación tanto si acierta como si falla.
 8. Elementos de apoyo: aproximadamente una imagen, esquema o elemento interactivo por cada 350 palabras, y al menos 1 de cada 3 interactivo. Cada uno con sentido pedagógico: preséntalo en el texto y explica por qué ayuda. Sin saturar.
-9. Navegación clara: si hay un elemento interactivo, explica cómo usarlo («pulsa en cada imagen y lee...»). Avisa de los enlaces externos y evita saltos innecesarios.
+9. Navegación clara: si hay un elemento interactivo, explica cómo usarlo (“pulsa en cada imagen y lee...”). Avisa de los enlaces externos y evita saltos innecesarios.
 10. Adaptabilidad (Diseño Universal para el Aprendizaje): cuando encaje, termina con una propuesta breve de refuerzo y otra de ampliación.
 11. Calidad de los contenidos: rigurosos, actualizados, sin errores ni sesgos (de género, culturales o de otro tipo) y respetando la propiedad intelectual.
-12. Accesibilidad del texto: lenguaje claro, títulos en orden, tablas con fila de encabezados, enlaces descriptivos (nunca «pincha aquí») y nada que dependa solo del color.
+12. Accesibilidad del texto: lenguaje claro, títulos en orden, tablas con fila de encabezados, enlaces descriptivos (nunca “pincha aquí”) y nada que dependa solo del color.
 13. Como mucho 1-2 emojis estratégicos. Nada de redacción robótica: escribe como un docente amable que explica con calma.
 
 SEGÚN LA SECCIÓN
 - Bienvenida / ¿Qué vamos a aprender?: que el alumnado vea los objetivos redactados en forma activa, ${conReto ? "el reto" : "el producto"} final que va a construir, los conocimientos previos que necesita y el tiempo estimado.
 - ${conReto ? "Reto" : "Producto final"}: pon primero el entregable final (la evidencia del aprendizaje) con sus requisitos numerados. Después, los pasos en orden lógico, cada uno con un entregable parcial que el alumnado pueda comprobar por sí mismo (una lista de cotejo, una imagen de cómo debería quedar o preguntas de autocorrección). Añade una rúbrica construida a partir de los requisitos. Hazlo inclusivo (lenguaje que no excluya, situaciones reconocibles para alumnado diverso, sin dar por hecho recursos que no todos tienen) e incluye algo de colaboración (trabajo en grupo, evaluación entre compañeros).
-- Página de actividades («Demuestra lo aprendido» o «¡A jugar!»): propón 3 actividades interactivas de eXeLearning de tipos distintos (relacionar, completar, ordenar, clasificar, sopa de letras...) con todos los datos listos para meter en eXe y retroalimentación para aciertos y errores.
+- Página de actividades (“Demuestra lo aprendido” o “¡A jugar!”): propón 3 actividades interactivas de eXeLearning de tipos distintos (relacionar, completar, ordenar, clasificar, sopa de letras...) con todos los datos listos para meter en eXe y retroalimentación para aciertos y errores.
 - Reflexiona: autoevaluación conectada con los criterios de evaluación y con los requisitos ${conReto ? "del reto" : "del producto"} final.
 
 LENGUAJE
@@ -912,7 +922,7 @@ ${L(p.lenguaje)}
 Lenguaje inclusivo y respetuoso con todas las familias, culturas y capacidades.
 
 FORMATO DE SALIDA
-1) Un bloque de código con HTML listo para pegar en el editor de eXeLearning. Sustituye todo el contenido de la página, incluida la nota «Para el docente», que no debe aparecer en tu respuesta.
+1) Un bloque de código con HTML listo para pegar en el editor de eXeLearning. Sustituye todo el contenido de la página, incluida la nota “Para el docente”, que no debe aparecer en tu respuesta.
 - Usa solo: h3, p, strong, em, ul, ol, li, blockquote, table, tr, th, td.
 - Sin estilos, sin imágenes, sin Markdown.
 - Donde vaya una imagen, deja solo una marca numerada: <p><em>[IMAGEN 1]</em></p>, <p><em>[INFOGRAFÍA 2]</em></p>...
@@ -968,7 +978,7 @@ Formato vertical, proporción de un folio A4 (2:3). Deja espacio libre arriba pa
 ACCESIBILIDAD (UNE 71362)
 Además de la imagen, dame:
 - Un texto alternativo de máximo 125 caracteres que describa lo esencial.
-- Una línea de atribución: «Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0».
+- Una línea de atribución: “Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0”.
 Cuida el contraste y que nada importante dependa solo del color.`;
 }
 function pImagen() {
@@ -987,7 +997,7 @@ Along with the image, give me:
 Mind the contrast and make sure nothing important depends on colour alone.`
   : `Genera una ilustración para un apartado de un REA de ${area()} para ${CT()}.
 
-ENCARGO DE IMAGEN: [pega aquí el encargo «IMAGEN n» que te dio el prompt de Mejora del texto. Si no lo tienes, describe qué debe mostrar la imagen y qué idea debe ayudar a entender]
+ENCARGO DE IMAGEN: [pega aquí el encargo “IMAGEN n” que te dio el prompt de Mejora del texto. Si no lo tienes, describe qué debe mostrar la imagen y qué idea debe ayudar a entender]
 
 ${estilo()}
 
@@ -996,7 +1006,7 @@ La imagen debe ser pedagógica, no decorativa: tiene que ayudar a entender la id
 ACCESIBILIDAD (UNE 71362)
 Además de la imagen, dame:
 - Un texto alternativo de máximo 125 caracteres que describa lo esencial.
-- Una línea de atribución: «Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0».
+- Una línea de atribución: “Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0”.
 Cuida el contraste y que nada importante dependa solo del color.`;
 }
 function pInfo() {
@@ -1020,7 +1030,7 @@ Mind the contrast and make sure nothing important depends on colour alone.
 - Also a long description (3-5 lines) with all the information in the infographic, to place under it in eXeLearning.`
   : `Quiero una infografía para un apartado de un REA de ${area()} para ${CT()}.
 
-ENCARGO DE INFOGRAFÍA: [pega aquí el encargo «INFOGRAFÍA n» que te dio el prompt de Mejora del texto, o el texto del apartado]
+ENCARGO DE INFOGRAFÍA: [pega aquí el encargo “INFOGRAFÍA n” que te dio el prompt de Mejora del texto, o el texto del apartado]
 
 Paso 1: propón el contenido de la infografía: un título corto y 3-5 ideas clave de máximo ${pal} palabras cada una, con el dibujo que acompaña a cada idea. Si el encargo ya las trae, úsalas y solo revísalas.
 Paso 2: genera la imagen de la infografía.
@@ -1032,7 +1042,7 @@ Formato horizontal 16:9. Poco texto, letra grande y legible, sin faltas de ortog
 ACCESIBILIDAD (UNE 71362)
 Además de la imagen, dame:
 - Un texto alternativo de máximo 125 caracteres que describa lo esencial.
-- Una línea de atribución: «Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0».
+- Una línea de atribución: “Imagen generada con [herramienta] por ${v(S.nombre, "[autoría]")}. CC BY-SA 4.0”.
 Cuida el contraste y que nada importante dependa solo del color.
 - Además, una descripción larga (3-5 líneas) con toda la información de la infografía, para ponerla debajo en eXeLearning.`;
 }
@@ -1115,12 +1125,12 @@ Termina con:
 - Las 5 mejoras prioritarias, ordenadas por su impacto en el aprendizaje.
 - 2-3 puntos fuertes del REA.
 
-Reglas: sé concreto y honesto; no inventes contenido que no esté en el archivo; si algo no se puede comprobar con el archivo, dilo. Si encuentras notas «Para el docente» o marcas [IMAGEN] o [ACTIVIDAD] sin resolver, señálalas al principio como pendientes.`;
+Reglas: sé concreto y honesto; no inventes contenido que no esté en el archivo; si algo no se puede comprobar con el archivo, dilo. Si encuentras notas “Para el docente” o marcas [IMAGEN] o [ACTIVIDAD] sin resolver, señálalas al principio como pendientes.`;
 }
 const CHECK = [
   { g: { es: "Antes de usarlo en el aula", en: "Before using it in class" }, items: [
     { es: "He revisado que todo el contenido es correcto y adecuado a la edad.", en: "I have checked that all content is correct and suitable for the age group." },
-    { es: "No queda ninguna nota «Para el docente» ni marcas [IMAGEN] o [ACTIVIDAD] sin resolver.", en: "No “For the teacher” notes or unresolved [IMAGE] or [ACTIVITY] markers are left." },
+    { es: "No queda ninguna nota “Para el docente” ni marcas [IMAGEN] o [ACTIVIDAD] sin resolver.", en: "No “For the teacher” notes or unresolved [IMAGE] or [ACTIVITY] markers are left." },
     { es: "El alumnado tiene los conocimientos previos necesarios para trabajarlo.", en: "Students have the prior knowledge needed to work on it." },
     { es: "Están disponibles todos los recursos que necesita el alumnado (materiales, dispositivos, programas).", en: "All the resources students need are available (materials, devices, software)." },
     { es: "La evaluación es coherente con el resto de la programación.", en: "The assessment is consistent with the rest of the planning." },
@@ -1186,7 +1196,7 @@ function pintar() {
   $("#l_area").textContent = L(E.area);
   $("#s_area").value = S.area;
   $("#s_area").placeholder = esFP(S.etapa) ? (EN() ? "Computer hardware · Microcomputer Systems and Networks" : "Montaje y mantenimiento de equipos · SMR") : (EN() ? "Spanish Language and Literature" : "Lengua Castellana y Literatura");
-  $("#estructura").innerHTML = estructura(S.etapa, S.curso).map(s => `<li>${esc(L(s.titulo))}${s.apartados ? ` <span class="opt">(${s.apartados} ${EN() ? "subsections" : "apartados"}${s.demuestra ? (EN() ? " and «" : " y «") + esc(L(s.demuestra)) + "»" : ""})</span>` : ""}</li>`).join("");
+  $("#estructura").innerHTML = estructura(S.etapa, S.curso).map(s => `<li>${esc(L(s.titulo))}${s.apartados ? ` <span class="opt">(${s.apartados} ${EN() ? "subsections" : "apartados"}${s.demuestra ? (EN() ? " and “" : " y “") + esc(L(s.demuestra)) + "”" : ""})</span>` : ""}</li>`).join("");
   $("#topCtx").textContent = `· ${S.titulo ? S.titulo + " · " : ""}${nivelesTxt(S.niveles, EN())}${S.area ? " · " + S.area : ""}`;
   Object.entries(PROMPTS).forEach(([id, fn]) => $("#" + id).textContent = fn());
   pintarChecklist();
@@ -1234,7 +1244,7 @@ async function copiar(txt, btn) {
   catch (e) {
     const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select();
     let ok = false; try { ok = document.execCommand("copy"); } catch (e2) {}
-    ta.remove(); avisar(btn, ok ? t("copiado") : (EN() ? "Could not copy. Open “Show the prompt” and copy it by hand." : "No se pudo copiar. Abre «Ver el prompt» y cópialo a mano."), !ok);
+    ta.remove(); avisar(btn, ok ? t("copiado") : (EN() ? "Could not copy. Open “Show the prompt” and copy it by hand." : "No se pudo copiar. Abre “Ver el prompt” y cópialo a mano."), !ok);
   }
 }
 
@@ -1346,9 +1356,9 @@ const hijo = (el, name) => [...el.children].find(c => c.tagName === name);
 function leer(raw, msgs) {
   const add = (c, m) => msgs.push(`<li class="${c}">${m}</li>`);
   const x = limpiar(raw);
-  if (!x.startsWith("<rea")) { add("e", EN() ? "I can't find the OER code. Make sure you copy the whole code box the AI gave you in step 2 (look for the “Copy” button in its corner)." : "No encuentro el código del REA. Asegúrate de copiar entero el recuadro de código que te dio la IA en la fase 2 (busca el botón «Copiar» en su esquina)."); return null; }
+  if (!x.startsWith("<rea")) { add("e", EN() ? "I can't find the OER code. Make sure you copy the whole code box the AI gave you in step 2 (look for the “Copy” button in its corner)." : "No encuentro el código del REA. Asegúrate de copiar entero el recuadro de código que te dio la IA en la fase 2 (busca el botón “Copiar” en su esquina)."); return null; }
   let r = parse(x); if (r.error) r = parse(arreglos(x));
-  if (r.error) { add("e", EN() ? "The code has a small format error. Don't worry, it happens: ask the AI “The XML has a format error. Return it corrected and complete.” and paste the new code here." : "Al código se le ha colado un error de formato. Tranquilidad, pasa a veces: pide a la IA «El XML tiene un error de formato. Devuélvelo corregido y completo» y pega aquí el código nuevo."); return null; }
+  if (r.error) { add("e", EN() ? "The code has a small format error. Don't worry, it happens: ask the AI “The XML has a format error. Return it corrected and complete.” and paste the new code here." : "Al código se le ha colado un error de formato. Tranquilidad, pasa a veces: pide a la IA “El XML tiene un error de formato. Devuélvelo corregido y completo” y pega aquí el código nuevo."); return null; }
   const root = r.doc.documentElement;
   const etapa = ETAPAS[root.getAttribute("etapa")] ? root.getAttribute("etapa") : S.etapa;
   const cursosXml = String(root.getAttribute("curso") || "").split(/[,;\s]+/).filter(c => ETAPAS[etapa].cursos.includes(c));
@@ -1373,7 +1383,7 @@ function leer(raw, msgs) {
   const tipos = rea.secciones.map(s => s.tipo);
   est.filter(s => !tipos.includes(s.tipo)).forEach(s => {
     if (s.tipo === "ficha") rea.secciones.push(fichaAuto(rea));
-    else add("w", EN() ? `The “${esc(Li(s.titulo))}” section is missing. You can add it later in eXeLearning.` : `Falta la sección «${esc(Li(s.titulo))}». Puedes añadirla luego en eXeLearning.`);
+    else add("w", EN() ? `The “${esc(Li(s.titulo))}” section is missing. You can add it later in eXeLearning.` : `Falta la sección “${esc(Li(s.titulo))}”. Puedes añadirla luego en eXeLearning.`);
   });
   est.filter(s => s.demuestra).forEach(d => {
     const sec = rea.secciones.find(s => s.tipo === d.tipo);
@@ -1382,7 +1392,7 @@ function leer(raw, msgs) {
       docente: idioma === "en" ? "<p>Add 3 interactive eXeLearning activities here. You can ask the AI for them with the step 4 prompt.</p>" : "<p>Añade aquí 3 actividades interactivas de eXeLearning. Puedes pedírselas a la IA con el prompt de la fase 4.</p>" });
   });
   const n = rea.secciones.reduce((a, s) => a + 1 + s.apartados.length, 0);
-  add("k", EN() ? `Done! “${esc(rea.titulo)}” has ${n} pages. Open it in eXeLearning 3 (File → Open).` : `¡Hecho! «${esc(rea.titulo)}» tiene ${n} páginas. Ábrelo en eXeLearning 3 (Archivo → Abrir).`);
+  add("k", EN() ? `Done! “${esc(rea.titulo)}” has ${n} pages. Open it in eXeLearning 3 (File → Open).` : `¡Hecho! “${esc(rea.titulo)}” tiene ${n} páginas. Ábrelo en eXeLearning 3 (Archivo → Abrir).`);
   return rea;
 }
 function fichaAuto(r) {
