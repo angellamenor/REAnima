@@ -120,6 +120,15 @@ details.ayuda p{margin:0 0 6px}
 .ledui{border-color:var(--mint);background:linear-gradient(180deg,var(--mint-soft),var(--panel) 75%)}
 .btn.enl{display:inline-block;text-decoration:none}
 
+/* Visita guiada */
+.tour{position:fixed;inset:0;z-index:20}
+.tour-hl{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px rgba(19,32,50,.55);outline:3px solid var(--mint);outline-offset:2px;transition:all .25s ease;pointer-events:none}
+.tour-bu{position:fixed;background:var(--panel);color:var(--ink);border-radius:12px;padding:16px 18px 14px;width:min(340px,calc(100vw - 24px));box-shadow:0 12px 32px rgba(0,0,0,.25);transition:top .25s ease,left .25s ease}
+.tour-bu p{margin:0 0 12px;font-size:15.5px}
+.tour-bu .fila{margin-top:0;justify-content:space-between}
+.tour-bu small{color:var(--muted);font-size:13px}
+.tour-bu .btn{padding:8px 16px}
+
 /* Pantallas de inicio */
 .inicio{position:fixed;inset:0;background:var(--side);z-index:10;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px}
 .inicio .caja{background:var(--panel);border:1px solid var(--line);border-radius:16px;max-width:540px;width:100%;padding:26px 26px 22px;box-shadow:0 10px 30px rgba(19,32,50,.08)}
@@ -168,7 +177,7 @@ details.ayuda p{margin:0 0 6px}
     <div id="in1">
       <h1 id="inTit" data-t="in1_t"></h1>
       <p data-t="in1_p"></p>
-      <div class="consejo" data-t="in1_meta"></div>
+      <div class="consejo" id="in1_meta" data-t="in1_meta"></div>
       <div data-t="in1_ventajas"></div>
       <p class="nota" data-t="in1_req"></p>
     </div>
@@ -186,6 +195,8 @@ details.ayuda p{margin:0 0 6px}
     <div id="in4" class="hidden">
       <h1 data-t="in4_t"></h1>
       <p data-t="in4_p"></p>
+      <div class="consejo" data-t="in1_meta"></div>
+      <p data-t="in4_inst"></p>
       <div class="fila"><button class="btn" id="inInstalar" data-t="in4_btn"></button></div>
       <p class="nota" id="in4_manual"></p>
     </div>
@@ -194,6 +205,14 @@ details.ayuda p{margin:0 0 6px}
       <button class="btn" id="inSig" data-t="continuar"></button>
     </div>
     <div class="puntos" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </div>
+</div>
+
+<div class="tour hidden" id="tour" role="dialog" aria-modal="true" aria-live="polite">
+  <div class="tour-hl" id="tourHl"></div>
+  <div class="tour-bu" id="tourBu">
+    <p id="tourTxt"></p>
+    <div class="fila"><button class="enlace" id="tourSaltar" data-t="tour_saltar"></button><small id="tourN"></small><button class="btn" id="tourSig"></button></div>
   </div>
 </div>
 
@@ -315,7 +334,8 @@ details.ayuda p{margin:0 0 6px}
   <div class="card" id="formDatos2"></div>
   <div class="fila"><button class="btn" id="btnGuardar" data-t="guardar"></button><span class="aviso" aria-live="polite"></span></div>
   <p class="nota" data-t="f6_local"></p>
-  <p style="margin-top:18px"><button class="enlace" id="btnReset" data-t="f6_reset"></button></p>
+  <p style="margin-top:18px"><button class="enlace" id="btnTour" data-t="f6_tour"></button></p>
+  <p style="margin-top:10px"><button class="enlace" id="btnReset" data-t="f6_reset"></button></p>
 </section>
 
 <section class="fase" id="f7">
@@ -388,9 +408,9 @@ const T = {
   copiar: { es: "Copiar prompt", en: "Copy prompt" }, ver: { es: "Ver el prompt", en: "Show the prompt" },
   copiado: { es: "Copiado. Ahora pégalo en tu IA", en: "Copied. Now paste it into your AI" }, guardar: { es: "Guardar", en: "Save" }, guardado: { es: "Guardado", en: "Saved" },
   instalar: { es: "Instalar REAnima", en: "Install REAnima" },
-  in4_t: { es: "Último paso: instala REAnima", en: "Last step: install REAnima" },
-  in4_p: { es: "Un clic y tendrás REAnima con su icono en el escritorio o el móvil. Funciona incluso sin conexión.", en: "One click and you'll have REAnima with its icon on your desktop or phone. It even works offline." },
-  in4_btn: { es: "Instalar REAnima", en: "Install REAnima" },
+  in4_t: { es: "Contra el REA en blanco", en: "Beat the blank OER" },
+  in4_p: { es: "Muchísimos docentes querrían crear sus propios recursos educativos abiertos y nunca han dado el paso. No por falta de ganas: empezar desde cero, ante la página en blanco, frena a cualquiera. REAnima está hecha para eso, para que des ese primer paso y tengas tu primer REA.", en: "Lots of teachers would like to create their own open educational resources and have never taken the step. Not for lack of will: starting from scratch, facing a blank page, stops anyone. REAnima is made for exactly that, so you take that first step and get your first OER done." },
+  in4_btn: { es: "Instalar REAnima y empezar", en: "Install REAnima and start" },
   in4_hecho: { es: "Instalada. Ábrela desde su icono; ya puedes cerrar esta pestaña.", en: "Installed. Open it from its icon; you can close this tab now." },
   in4_ios: { es: "En iPhone o iPad: pulsa el botón Compartir de Safari y elige “Añadir a pantalla de inicio”. Después abre REAnima desde su icono.", en: "On iPhone or iPad: tap Safari’s Share button and choose “Add to Home Screen”. Then open REAnima from its icon." },
   in4_otro: { es: "¿No ves el botón? Abre esta página con Google Chrome o Microsoft Edge y pulsa el icono de instalar que aparece en la barra de direcciones (o menú ⋮ → “Instalar REAnima” / “Añadir a pantalla de inicio”). Firefox y Safari en Mac no instalan aplicaciones web.", en: "Can't see the button? Open this page in Google Chrome or Microsoft Edge and click the install icon in the address bar (or menu ⋮ → “Install REAnima” / “Add to Home screen”). Firefox and Safari on Mac do not install web apps." },
@@ -421,21 +441,21 @@ const T = {
   f1_p: { es: "La IA lee tu programación y te propone cómo organizar el REA.", en: "The AI reads your lesson plan and suggests how to organise the OER." },
   f1_pasos: { es: ["Abre un chat nuevo en tu IA.", "Adjunta tu programación o pega su texto.", "Copia este prompt, pégalo y envía.", "Responde a lo que te pregunte. No cierres el chat."], en: ["Open a new chat in your AI.", "Attach your lesson plan or paste its text.", "Copy this prompt, paste it and send.", "Answer its questions. Keep the chat open."] },
   f2_t: { es: "2 · Crea", en: "2 · Create" },
-  f2_p: { es: "En el mismo chat, la IA prepara el borrador de tu REA.", en: "In the same chat, the AI prepares the draft of your OER." },
+  f2_p: { es: "En el mismo chat, la IA prepara el borrador de tu REA y un guion para ti en cada página.", en: "In the same chat, the AI prepares the draft of your OER and a plan for you on each page." },
   f2_pasos: { es: ["Pega este prompt en el mismo chat.", "Copia el código que te devuelva (suele tener un botón Copiar).", "Pégalo en la fase 3."], en: ["Paste this prompt in the same chat.", "Copy the code it returns (there's usually a Copy button).", "Paste it in step 3."] },
   f3_t: { es: "3 · Convierte", en: "3 · Convert" },
   f3_p: { es: "Pega el código de la IA y descarga tu archivo de eXeLearning.", en: "Paste the AI's code and download your eXeLearning file." },
   f3_label: { es: "Código de la fase 2", en: "Code from step 2" },
   f3_btn: { es: "Crear archivo de eXeLearning", en: "Create eXeLearning file" },
 
-  f3_nota: { es: "Ábrelo en eXeLearning 3 con Archivo > Abrir. Cada página trae una nota “Para el docente” con pistas, que desaparece al mejorarla en la fase 4.", en: "Open it in eXeLearning 3 with File > Open. Each page has a “For the teacher” note with hints, which disappears when you improve it in step 4." },
+  f3_nota: { es: "Ábrelo en eXeLearning 3 con Archivo > Abrir. Arriba de cada página verás un recuadro “Guion de la página”: son pistas solo para ti, con lo que conviene desarrollar. Desaparece cuando mejoras la página en la fase 4.", en: "Open it in eXeLearning 3 with File > Open. At the top of each page you'll see a “Page plan” box: hints only for you on what to develop. It disappears when you improve the page in step 4." },
   f4_t: { es: "4 · Mejora", en: "4 · Improve" }, f4_texto: { es: "El texto", en: "The text" }, f4_mm: { es: "Imágenes y multimedia", en: "Images and multimedia" },
   f4_p: { es: "Mejora tu REA página a página. Aquí entra lo que solo tú sabes de tu aula.", en: "Improve your OER page by page. This is where what only you know about your class comes in." },
   f4_mm_p: { es: "Con una IA que cree imágenes. Si la IA te dio encargos de imagen, úsalos aquí. Adjunta tu logo o colores para que todo tenga el mismo estilo.", en: "With an image-generating AI. If the AI gave you image briefs, use them here. Attach your logo or colours so everything shares the same style." },
-  f4_pasos: { es: ["En eXeLearning, copia el texto de una página (con la nota “Para el docente”).", "Pega el prompt en tu IA y añade ese texto y lo que quieras cambiar.", "Pega la respuesta en eXeLearning con el botón de código fuente (<>).", "Repite con cada página."], en: ["In eXeLearning, copy a page's text (including the “For the teacher” note).", "Paste the prompt into your AI and add that text and what you want to change.", "Paste the answer into eXeLearning with the source code button (<>).", "Repeat for each page."] },
+  f4_pasos: { es: ["En eXeLearning, copia todo el texto de una página, guion incluido.", "Pega el prompt en tu IA y añade ese texto y lo que quieras cambiar.", "Pega la respuesta en eXeLearning con el botón de código fuente (<>). El guion desaparece.", "Repite con cada página."], en: ["In eXeLearning, copy all the text of a page, plan included.", "Paste the prompt into your AI and add that text and what you want to change.", "Paste the answer into eXeLearning with the source code button (<>). The plan disappears.", "Repeat for each page."] },
   f5_t: { es: "5 · Valida", en: "5 · Validate" }, f5_ia: { es: "Revisión con IA", en: "AI review" }, f5_tu: { es: "Tu comprobación final", en: "Your final check" },
   f5_tu_p: { es: "Marca cada punto cuando lo hayas revisado.", en: "Tick each item once you've checked it." },
-  f5_pasos: { es: ["Exporta tu REA desde eXeLearning como página web única o PDF.", "Abre un chat nuevo, adjunta el archivo y pega este prompt.", "Corrige lo que te señale, empezando por lo prioritario."], en: ["Export your OER from eXeLearning as a single web page or PDF.", "Open a new chat, attach the file and paste this prompt.", "Fix what it points out, starting with the priorities."] },
+  f5_pasos: { es: ["En eXeLearning, exporta tu REA con la opción “Página sola”.", "Busca el archivo index.html (si se descarga un .zip, descomprímelo antes).", "Abre un chat nuevo, adjunta ese index.html y pega este prompt.", "Corrige lo que te señale, empezando por lo prioritario."], en: ["In eXeLearning, export your OER with the “Single page” option.", "Find the index.html file (if a .zip downloads, unzip it first).", "Open a new chat, attach that index.html and paste this prompt.", "Fix what it points out, starting with the priorities."] },
   f5_p: { es: "Último repaso antes de llevarlo al aula: primero la IA, luego tú.", en: "A last check before taking it to class: first the AI, then you." },
   mm_portada: { es: "Portada", en: "Cover" }, mm_portada_d: { es: "La imagen de la Bienvenida, en vertical como un folio.", en: "The Welcome image, portrait like an A4 page." },
   mm_imagen: { es: "Imágenes", en: "Images" }, mm_imagen_d: { es: "Ilustraciones para los apartados. Pega el encargo “IMAGEN n” que te dio el prompt de Mejora del texto.", en: "Illustrations for the subsections. Paste the “IMAGE n” brief from the Improve text prompt." },
@@ -476,7 +496,16 @@ const T = {
   f2_tip_s: { es: "¿Y si algo falla?", en: "What if something goes wrong?" },
   f3_tip_s: { es: "¿No tienes eXeLearning?", en: "Don't have eXeLearning?" },
   f4_tip_s: { es: "¿Tengo que saber HTML?", en: "Do I need to know HTML?" },
-  f5_tip_s: { es: "¿Y si me salen muchas mejoras?", en: "What if I get lots of improvements?" }
+  f5_tip_s: { es: "¿Y si me salen muchas mejoras?", en: "What if I get lots of improvements?" },
+  in4_inst: { es: "Instálala y la tendrás siempre a mano: con su icono en el escritorio o en el móvil, en su propia ventana y también sin conexión.", en: "Install it and you'll always have it at hand: with its icon on your desktop or phone, in its own window and even offline." },
+  tour_1: { es: "Bienvenido. Empieza aquí: rellena la ficha de tu REA con el curso, la materia y, si quieres, el título.", en: "Welcome. Start here: fill in your OER's details with the year, the subject and, if you like, the title." },
+  tour_2: { es: "Estos son los 5 pasos para crear tu REA: Analiza, Crea, Convierte, Mejora y Valida. Puedes volver a cualquiera cuando quieras.", en: "These are the 5 steps to create your OER: Analyse, Create, Convert, Improve and Validate. You can go back to any of them whenever you like." },
+  tour_3: { es: "Cuando acabes cada paso, pulsa aquí y pasarás al siguiente. Así, de uno en uno, hasta tener tu REA.", en: "When you finish each step, click here to move on to the next one. One at a time, until your OER is done." },
+  tour_4: { es: "En Ajustes puedes cambiar tus datos o repetir esta visita. Y si tienes dudas en algún paso, abre las preguntas que hay bajo las instrucciones.", en: "In Settings you can change your details or replay this tour. And if you have questions at any step, open the questions below the instructions." },
+  tour_sig: { es: "Siguiente", en: "Next" },
+  tour_fin: { es: "Empezar", en: "Start" },
+  tour_saltar: { es: "Saltar", en: "Skip" },
+  f6_tour: { es: "Ver de nuevo la visita guiada", en: "Replay the guided tour" }
 };
 const t = k => L(T[k]) ?? k;
 const ord = c => EN() ? `Year ${c}` : `${c}.º`;
@@ -713,7 +742,7 @@ function prompt2() {
   const lista = est.map((s, i) => {
     let x = `${i + 1}. tipo="${s.tipo}" · ${EN() ? "title" : "título"} “${L(s.titulo)}”: ${L(s.que)}`;
     if (s.apartados) x += EN() ? ` It has ${s.apartados} subsections with their own titles.` : ` Lleva entre ${s.apartados} apartados con título propio.`;
-    if (s.demuestra) x += EN() ? ` Its last subsection is tipo="demuestra" titled “${L(s.demuestra)}”: it will hold 3 interactive eXeLearning activities; only leave the teacher note.` : ` Su último apartado es tipo="demuestra" con el título “${L(s.demuestra)}”: ahí irán 3 actividades interactivas de eXeLearning; solo deja la nota para el docente.`;
+    if (s.demuestra) x += EN() ? ` Its last subsection is tipo="demuestra" titled “${L(s.demuestra)}”: it will hold 3 interactive eXeLearning activities; only leave the page plan.` : ` Su último apartado es tipo="demuestra" con el título “${L(s.demuestra)}”: ahí irán 3 actividades interactivas de eXeLearning; solo deja la nota para el docente.`;
     return x;
   }).join("\n");
   const autor = v(S.nombre, EN() ? "Teacher's name" : "Nombre del docente");
@@ -838,14 +867,14 @@ ${ctx()}
 
 You will EXPAND and add DETAIL to one section of an eXeLearning OER. The current text is only a skeleton: turn it into a complete, high-quality section, ready for students.
 
-CURRENT TEXT OF THE SECTION (draft and “For the teacher” note)
+CURRENT TEXT OF THE SECTION (draft and “Page plan”)
 [Paste here the text of the section as it is in eXeLearning]
 
 WHAT I WANT TO ADD
 [Write here your ideas, examples, activities or anything that must be included. If you have nothing to add, delete this line]
 
 HOW TO WRITE IT (quality guidelines aligned with UNE 71362)
-1. Write for independent learning: imagine the student has no teacher to ask. After reading, they should have no doubts left. Follow the “For the teacher” note (purpose, key ideas, examples, support elements, watch out for...) and include everything the teacher wants to add.
+1. Write for independent learning: imagine the student has no teacher to ask. After reading, they should have no doubts left. Follow the “Page plan” (purpose, key ideas, examples, support elements, watch out for...) and include everything the teacher wants to add.
 2. The first paragraph is the key: it must represent the whole section and say from the start what students will achieve or produce here.
 3. Organised exposition: from simple to complex, short paragraphs, h3 subheadings, lists where they help, connectors that guide the reader. Everything must lead towards the final ${conReto ? "challenge" : "product"}.
 4. Highlighted boxes: add 1-2 short “messages from the teacher” as a <blockquote> (a key idea, a tip, a common mistake to avoid).
@@ -870,7 +899,7 @@ ${L(p.lenguaje)}
 Inclusive language that respects all families, cultures and abilities.
 
 OUTPUT FORMAT
-1) A code block with HTML ready to paste into the eXeLearning editor. It replaces the whole content of the page, including the “For the teacher” note, which must not appear in your answer.
+1) A code block with HTML ready to paste into the eXeLearning editor. It replaces the whole content of the page, including the “Page plan”, which must not appear in your answer.
 - Use only: h3, p, strong, em, ul, ol, li, blockquote, table, tr, th, td.
 - No styles, no images, no Markdown.
 - Where an image goes, leave only a numbered marker: <p><em>[IMAGE 1]</em></p>, <p><em>[INFOGRAPHIC 2]</em></p>...
@@ -890,14 +919,14 @@ ${ctx()}
 
 Vas a AMPLIAR y DETALLAR una sección de un REA de eXeLearning. El texto actual es solo un esqueleto: conviértelo en una sección completa, de calidad y lista para el alumnado.
 
-TEXTO ACTUAL DE LA SECCIÓN (borrador y nota “Para el docente”)
+TEXTO ACTUAL DE LA SECCIÓN (borrador y “Guion de la página”)
 [Pega aquí el texto de la sección tal como está en eXeLearning]
 
 LO QUE QUIERO AÑADIR
 [Escribe aquí tus ideas, ejemplos, actividades o lo que no puede faltar. Si no quieres añadir nada, borra esta línea]
 
 CÓMO ESCRIBIRLO (pautas de calidad alineadas con la UNE 71362)
-1. Redacta para el aprendizaje autónomo: imagina que el alumno no tiene a quién preguntar. Al terminar de leer, no debería quedarle ninguna duda. Sigue la nota “Para el docente” (para qué sirve, ideas clave, ejemplos, elementos de apoyo, ojo con...) e incorpora todo lo que el docente quiere añadir.
+1. Redacta para el aprendizaje autónomo: imagina que el alumno no tiene a quién preguntar. Al terminar de leer, no debería quedarle ninguna duda. Sigue el “Guion de la página” (para qué sirve, ideas clave, ejemplos, elementos de apoyo, ojo con...) e incorpora todo lo que el docente quiere añadir.
 2. El primer párrafo es clave: debe representar la sección entera y decir desde el principio qué va a conseguir o producir el alumnado aquí.
 3. Organización expositiva: de lo simple a lo complejo, párrafos cortos, subtítulos h3, listas cuando ayuden y conectores que orienten la lectura. Todo debe encaminar hacia ${conReto ? "el reto" : "el producto"} final.
 4. Cuadros destacados: añade 1-2 “mensajes que te deja el docente” breves en un <blockquote> (una idea clave, un consejo, un error frecuente que evitar).
@@ -922,7 +951,7 @@ ${L(p.lenguaje)}
 Lenguaje inclusivo y respetuoso con todas las familias, culturas y capacidades.
 
 FORMATO DE SALIDA
-1) Un bloque de código con HTML listo para pegar en el editor de eXeLearning. Sustituye todo el contenido de la página, incluida la nota “Para el docente”, que no debe aparecer en tu respuesta.
+1) Un bloque de código con HTML listo para pegar en el editor de eXeLearning. Sustituye todo el contenido de la página, incluido el “Guion de la página”, que no debe aparecer en tu respuesta.
 - Usa solo: h3, p, strong, em, ul, ol, li, blockquote, table, tr, th, td.
 - Sin estilos, sin imágenes, sin Markdown.
 - Donde vaya una imagen, deja solo una marca numerada: <p><em>[IMAGEN 1]</em></p>, <p><em>[INFOGRAFÍA 2]</em></p>...
@@ -1050,7 +1079,7 @@ function prompt5() {
   const fp = esFP(S.etapa), conReto = S.etapa !== "primaria";
   return EN() ? `You are an expert evaluator of digital educational materials using the Spanish standard UNE 71362 (Quality of digital educational materials).
 
-I am attaching an Open Educational Resource (OER) created with eXeLearning, exported as a web page or PDF.
+I am attaching an Open Educational Resource (OER) created with eXeLearning, exported with the “Single page” option (its index.html file).
 
 ${ctx()}
 
@@ -1086,10 +1115,10 @@ Finish with:
 - The 5 priority improvements, ordered by impact on learning.
 - 2-3 strengths of the OER.
 
-Rules: be specific and honest; do not invent content that is not in the file; if something cannot be checked from the file, say so. If you find “For the teacher” notes or unresolved [IMAGE] or [ACTIVITY] markers, list them first as pending.`
+Rules: be specific and honest; do not invent content that is not in the file; if something cannot be checked from the file, say so. If you find “Page plan” boxes or unresolved [IMAGE] or [ACTIVITY] markers, list them first as pending.`
   : `Eres un evaluador experto en materiales educativos digitales según la norma UNE 71362 de Calidad de los Materiales Educativos Digitales.
 
-Te adjunto un Recurso Educativo Abierto (REA) creado con eXeLearning, exportado como página web o PDF.
+Te adjunto un Recurso Educativo Abierto (REA) creado con eXeLearning, exportado con la opción “Página sola” (su archivo index.html).
 
 ${ctx()}
 
@@ -1125,12 +1154,12 @@ Termina con:
 - Las 5 mejoras prioritarias, ordenadas por su impacto en el aprendizaje.
 - 2-3 puntos fuertes del REA.
 
-Reglas: sé concreto y honesto; no inventes contenido que no esté en el archivo; si algo no se puede comprobar con el archivo, dilo. Si encuentras notas “Para el docente” o marcas [IMAGEN] o [ACTIVIDAD] sin resolver, señálalas al principio como pendientes.`;
+Reglas: sé concreto y honesto; no inventes contenido que no esté en el archivo; si algo no se puede comprobar con el archivo, dilo. Si encuentras algún “Guion de la página” o marcas [IMAGEN] o [ACTIVIDAD] sin resolver, señálalas al principio como pendientes.`;
 }
 const CHECK = [
   { g: { es: "Antes de usarlo en el aula", en: "Before using it in class" }, items: [
     { es: "He revisado que todo el contenido es correcto y adecuado a la edad.", en: "I have checked that all content is correct and suitable for the age group." },
-    { es: "No queda ninguna nota “Para el docente” ni marcas [IMAGEN] o [ACTIVIDAD] sin resolver.", en: "No “For the teacher” notes or unresolved [IMAGE] or [ACTIVITY] markers are left." },
+    { es: "No queda ningún “Guion de la página” ni marcas [IMAGEN] o [ACTIVIDAD] sin resolver.", en: "No “Page plan” boxes or unresolved [IMAGE] or [ACTIVITY] markers are left." },
     { es: "El alumnado tiene los conocimientos previos necesarios para trabajarlo.", en: "Students have the prior knowledge needed to work on it." },
     { es: "Están disponibles todos los recursos que necesita el alumnado (materiales, dispositivos, programas).", en: "All the resources students need are available (materials, devices, software)." },
     { es: "La evaluación es coherente con el resto de la programación.", en: "The assessment is consistent with the rest of the planning." },
@@ -1175,7 +1204,7 @@ function traducir() {
   const nombres = t("nav");
   $("#arbol").innerHTML = nombres.map((n, i) => (i === 6 ? `<li class="sep" aria-hidden="true"></li>` : "") +
     `<li><a href="#" data-f="${i}"><span class="n">${i === 0 ? "★" : i <= 5 ? i : i === 6 ? "⚙" : "i"}</span><span class="t">${n}</span></a></li>`).join("");
-  pintar(); marcarFase(); pintarInicio();
+  pintar(); marcarFase(); pintarInicio(); tourInicio();
   $("#avisoPrevia").classList.toggle("hidden", !PREVIA);
 }
 function pintar() {
@@ -1267,6 +1296,7 @@ function pintarInicio() {
   if (!ver) return;
   if (S.ok && paso < 4) paso = 4;
   const tot = pasosTotales();
+  $("#in1_meta").classList.toggle("hidden", tot === 4);
   [1, 2, 3, 4].forEach(k => $("#in" + k).classList.toggle("hidden", k !== paso));
   $$(".puntos i").forEach((d, k) => { d.classList.toggle("hidden", k >= tot); d.classList.toggle("on", k < paso); });
   $("#inAnt").style.visibility = paso === 1 || (S.ok && paso === 4) ? "hidden" : "visible";
@@ -1306,6 +1336,45 @@ window.matchMedia("(display-mode: standalone)").addEventListener?.("change", () 
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol) && window.top === window) {
   try { navigator.serviceWorker.register("sw.js").catch(() => {}); } catch (e) {}
 }
+
+/* ================= Visita guiada (la primera vez que se abre la app) ================= */
+let tourPaso = -1;
+const TOUR = [
+  () => [$("#f0 .card")],
+  () => [1, 2, 3, 4, 5].map(i => $(`#arbol a[data-f="${i}"]`)),
+  () => [$("#sig")],
+  () => [$(`#arbol a[data-f="6"]`)]
+];
+function tourInicio() {
+  if (tourPaso >= 0) return tourPintar();
+  if (S.tour || !S.ok || debeMostrarInicio()) return;
+  tourAbrir();
+}
+function tourAbrir() { if (S.fase !== 0) ir(0); tourPaso = 0; $("#tour").classList.remove("hidden"); tourPintar(); $("#tourSig").focus(); }
+function tourCerrar() { tourPaso = -1; S.tour = true; guardarEstado(); $("#tour").classList.add("hidden"); }
+function tourPintar() {
+  if (tourPaso < 0) return;
+  const els = TOUR[tourPaso]().filter(Boolean);
+  els[0].scrollIntoView({ block: "center" });
+  const rs = els.map(e => e.getBoundingClientRect());
+  const r = { top: Math.min(...rs.map(x => x.top)), left: Math.min(...rs.map(x => x.left)), right: Math.max(...rs.map(x => x.right)), bottom: Math.max(...rs.map(x => x.bottom)) };
+  const m = 6, hl = $("#tourHl"), bu = $("#tourBu");
+  Object.assign(hl.style, { top: r.top - m + "px", left: r.left - m + "px", width: r.right - r.left + 2 * m + "px", height: r.bottom - r.top + 2 * m + "px" });
+  $("#tourTxt").textContent = t("tour_" + (tourPaso + 1));
+  $("#tourN").textContent = `${tourPaso + 1} / ${TOUR.length}`;
+  $("#tourSig").textContent = tourPaso === TOUR.length - 1 ? t("tour_fin") : t("tour_sig");
+  const W = innerWidth, H = innerHeight, bw = bu.offsetWidth, bh = bu.offsetHeight;
+  let top, left;
+  if (r.right + 16 + bw < W && r.right - r.left < W / 2) { left = r.right + 16; top = Math.min(Math.max(12, r.top), H - bh - 12); }   // a la derecha
+  else if (r.bottom + 16 + bh < H) { top = r.bottom + 16; left = Math.min(Math.max(12, r.left), W - bw - 12); }                      // debajo
+  else { top = Math.max(12, r.top - bh - 16); left = Math.min(Math.max(12, r.right - bw), W - bw - 12); }                          // encima
+  Object.assign(bu.style, { top: top + "px", left: left + "px" });
+}
+$("#tourSig").addEventListener("click", () => { if (tourPaso >= TOUR.length - 1) return tourCerrar(); tourPaso++; tourPintar(); });
+$("#tourSaltar").addEventListener("click", tourCerrar);
+$("#btnTour").addEventListener("click", tourAbrir);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && tourPaso >= 0) tourCerrar(); });
+window.addEventListener("resize", () => tourPintar());
 
 /* ================= Descarga ================= */
 let dlNS;
@@ -1424,8 +1493,8 @@ function bloque(pg, orden, nombre, html, doc, en) {
   return `<odePagStructure><odePageId>${pg}</odePageId><odeBlockId>${id}</odeBlockId><blockName>${xe(nombre)}</blockName><iconName></iconName><odePagStructureOrder>${orden}</odePagStructureOrder><odePagStructureProperties>${kv("odePagStructureProperty", "visibility", "true")}${kv("odePagStructureProperty", "teacherOnly", doc ? "true" : "false")}${kv("odePagStructureProperty", "allowToggle", doc ? "true" : "false")}${kv("odePagStructureProperty", "minimized", "false")}</odePagStructureProperties><odeComponents>${idevice(pg, id, html, doc, en)}</odeComponents></odePagStructure>`;
 }
 function pagina(item, padre, orden, en) {
-  // Un único bloque por página: la nota del docente arriba y el borrador debajo, para copiarlo todo de una vez en la fase Mejora.
-  const nota = item.docente ? `<div style="border:2px dashed #26ddc7;border-radius:8px;padding:8px 14px;margin-bottom:14px;background:#eefcfa"><p><strong>${en ? "📝 FOR THE TEACHER (delete it when you paste the improved text)" : "📝 PARA EL DOCENTE (se borra al pegar el texto mejorado)"}</strong></p>${item.docente}</div>` : "";
+  // Un único bloque por página: el guion de la página arriba y el borrador debajo, para copiarlo todo de una vez en la fase Mejora.
+  const nota = item.docente ? `<div style="border:2px dashed #26ddc7;border-radius:8px;padding:8px 14px;margin-bottom:14px;background:#eefcfa"><p><strong>${en ? "PAGE PLAN · Only for you, the OER author. It disappears when you improve this page in step 4." : "GUION DE LA PÁGINA · Solo para ti, que estás creando el REA. Desaparece cuando mejoras esta página en la fase 4."}</strong></p>${item.docente}</div>` : "";
   const id = newId(), b = [bloque(id, 1, "", nota + (item.alumnado || "<p></p>"), false, en)];
   return { id, xml: `<odeNavStructure><odePageId>${id}</odePageId><odeParentPageId>${padre || ""}</odeParentPageId><pageName>${xe(item.titulo)}</pageName><odeNavStructureOrder>${orden}</odeNavStructureOrder><odeNavStructureProperties>${kv("odeNavStructureProperty", "titlePage", item.titulo)}${kv("odeNavStructureProperty", "hidePageTitle", "false")}${kv("odeNavStructureProperty", "visibility", "true")}</odeNavStructureProperties><odePagStructures>${b.join("")}</odePagStructures></odeNavStructure>` };
 }
