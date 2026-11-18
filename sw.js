@@ -1,6 +1,6 @@
 /* REAnima · service worker
    Cambia CACHE en cada versión publicada: así la app instalada se actualiza sola. */
-const CACHE = "reanima-v16";
+const CACHE = "reanima-v17";
 const ARCHIVOS = [
   "./",
   "index.html",

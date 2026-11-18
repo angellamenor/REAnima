@@ -223,6 +223,18 @@ details.ayuda p{margin:0 0 6px}
   function cerrar() { if (hecho) return; hecho = true; s.classList.add("fuera"); setTimeout(function () { s.remove(); }, 450); }
   s.addEventListener("click", cerrar);
   setTimeout(cerrar, corto ? 650 : 2150);
+  // Si la app vuelve a primer plano tras un rato fuera (p. ej. en el móvil), se repite la entrada.
+  var copia = s.cloneNode(true), fuera = 0;
+  copia.classList.remove("fuera");
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { fuera = Date.now(); return; }
+    if (!fuera || Date.now() - fuera < 3 * 60 * 1000 || document.getElementById("splash")) return;
+    s = copia.cloneNode(true); hecho = false;
+    var l = document.querySelector("[data-t=lema]"); if (l) s.querySelector(".lema-s").innerHTML = l.innerHTML;
+    document.body.insertBefore(s, document.body.firstChild);
+    s.addEventListener("click", cerrar);
+    setTimeout(cerrar, corto ? 650 : 2150);
+  });
 })();
 </script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -365,15 +377,15 @@ details.ayuda p{margin:0 0 6px}
   <details class="ayuda"><summary data-t="f4_tip_s"></summary><div data-t="f4_tip"></div></details>
   <h2 class="bloque" data-t="f4_mm"></h2>
   <p class="nota" style="margin:-4px 0 12px" data-t="f4_mm_p"></p>
-  <div class="card"><h2 data-t="mm_portada"></h2><p class="nota" style="margin:0" data-t="mm_portada_d"></p>
-    <div class="fila"><button class="btn" data-copy="pPortada" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
-    <details><summary data-t="ver"></summary><pre id="pPortada"></pre></details></div>
   <div class="card"><h2 data-t="mm_imagen"></h2><p class="nota" style="margin:0" data-t="mm_imagen_d"></p>
     <div class="fila"><button class="btn" data-copy="pImagen" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="pImagen"></pre></details></div>
   <div class="card"><h2 data-t="mm_info"></h2><p class="nota" style="margin:0" data-t="mm_info_d"></p>
     <div class="fila"><button class="btn" data-copy="pInfo" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
     <details><summary data-t="ver"></summary><pre id="pInfo"></pre></details></div>
+  <div class="card"><h2 data-t="mm_portada"></h2><p class="nota" style="margin:0" data-t="mm_portada_d"></p>
+    <div class="fila"><button class="btn" data-copy="pPortada" data-t="copiar"></button><span class="aviso" aria-live="polite"></span></div>
+    <details><summary data-t="ver"></summary><pre id="pPortada"></pre></details></div>
   <p class="nota" data-t="mm_lic"></p>
 </section>
 
